@@ -1,0 +1,18 @@
+[package]
+name = "clock-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = "0.4.38"
+clap = { version = "4.5.9", features = ["derive"] }
+crossterm = "0.27.0"
+dirs = "5.0.1"
+serde = { version = "1.0.204", features = ["derive"] }
+toml = "0.8.15"
+
+[profile.release]
+strip = true
+opt-level = 3
+lto = true
+codegen-units = 1
