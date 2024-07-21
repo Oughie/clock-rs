@@ -8,7 +8,7 @@ clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal
 
 ## Table of Contents
 
-- [Why choose clock-rs?](#why-choose-clock-rs?)
+- [Why choose clock-rs?](#why-choose-clock-rs)
 - [Installation](#installation)
   - [Dependencies](#dependencies)
   - [Steps](#steps)
