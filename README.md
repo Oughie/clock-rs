@@ -104,7 +104,7 @@ vertical = "end"
 [date]
 # Set a custom date format (= "%d-%M-%Y")
 fmt = "%A, %B %dth %Y"
-# Specify, whether to use the 12 hour format (= "false")
+# Specify, whether to use the 12 hour format (= false)
 use_12h = true
 ```
 
