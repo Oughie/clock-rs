@@ -1,8 +1,10 @@
 # clock-rs
 
+![License](https://img.shields.io/github/license/Oughie/clock-rs)
+
 clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal clock built in pure Rust.
 
-![clock-rs screenshot](screenshots/preview.png)
+![presentation](screenshots/preview.png)
 
 ## Table of Contents
 
@@ -50,8 +52,6 @@ You can then run the executable via the `clock-rs` command.
 
 ## Usage
 
-To display the following message, run `$ clock-rs --help`.
-
 ```
 Usage: clock-rs [OPTIONS]
 
@@ -68,7 +68,7 @@ Options:
 ## Configuration
 
 clock-rs uses the [TOML](https://toml.io/en/) file format for its settings.  
-By default, it is stored in the OS default configuration directory, under `clock-rs`.
+By default, the configuration file is named `conf.toml` and is stored in the OS configuration directory, within the `clock-rs` subdirectory .
 
 On Linux: `~/.config/clock-rs/conf.toml`
 
