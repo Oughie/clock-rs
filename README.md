@@ -8,6 +8,7 @@ clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal
 
 ## Table of Contents
 
+- [Why choose clock-rs?](#why-choose-clock-rs?)
 - [Installation](#installation)
   - [Dependencies](#dependencies)
   - [Steps](#steps)
@@ -17,6 +18,12 @@ clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal
 - [Contributing](#contributing)
 - [License](#license)
 
+## Why choose clock-rs?
+
+Why use clock-rs over tty-clock? clock-rs ...
+- ... uses a configuration file for managing its settings, alongside with the ability to overwrite them through the command line,
+- ... is built in Rust, ensuring safety as well as efficiency, while also allowing for quick development,
+- ... and will receive more updates in the future!
 
 ## Installation
 
