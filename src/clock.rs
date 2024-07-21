@@ -54,11 +54,12 @@ impl fmt::Display for Clock<'_> {
         let mut hour = local.hour();
         let minute = local.minute();
         let second = local.second();
+
         let mut date_display = local.format(self.date_format).to_string();
 
         if self.date_use_12h {
-            let to_push = if hour < 12 { " [AM]" } else { " [PM]" };
-            date_display.push_str(to_push);
+            let suffix = if hour < 12 { " [AM]" } else { " [PM]" };
+            date_display.push_str(suffix);
 
             if hour > 12 {
                 hour -= 12;
@@ -72,15 +73,18 @@ impl fmt::Display for Clock<'_> {
         for row in 0..5 {
             write!(f, "{}", self.left_pad)?;
 
-            let h0 = CharacterDisplay::new(self.color, Character::Num(hour / 10), row);
-            let h1 = CharacterDisplay::new(self.color, Character::Num(hour % 10), row);
-            let m0 = CharacterDisplay::new(self.color, Character::Num(minute / 10), row);
-            let m1 = CharacterDisplay::new(self.color, Character::Num(minute % 10), row);
-            let s0 = CharacterDisplay::new(self.color, Character::Num(second / 10), row);
-            let s1 = CharacterDisplay::new(self.color, Character::Num(second % 10), row);
-            let c = CharacterDisplay::new(self.color, Character::Colon, row);
+            for (i, component) in [hour, minute, second].iter().enumerate() {
+                let i0 = CharacterDisplay::new(self.color, Character::Num(component / 10), row);
+                let i1 = CharacterDisplay::new(self.color, Character::Num(component % 10), row);
+                write!(f, "{i0}{i1}")?;
 
-            writeln!(f, "{h0}{h1}{c}{m0}{m1}{c}{s0}{s1}\r")?;
+                if i < 2 {
+                    let c = CharacterDisplay::new(self.color, Character::Colon, row);
+                    write!(f, "{c}")?;
+                }
+            }
+
+            writeln!(f, "\r")?;
         }
 
         writeln!(
@@ -88,8 +92,6 @@ impl fmt::Display for Clock<'_> {
             "\n{}{}{date_display}\x1B[0m",
             self.date_left_pad,
             self.color.foreground(),
-        )?;
-
-        Ok(())
+        )
     }
 }

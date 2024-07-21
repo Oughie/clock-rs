@@ -20,12 +20,18 @@ pub struct Args {
     #[clap(short = 't')]
     #[clap(help = "Use the 12h format")]
     pub use_12h: bool,
+    #[clap(long, short)]
+    #[clap(help = "Set the poll interval in milliseconds")]
+    pub interval: Option<u64>,
 }
 
 impl Args {
     pub fn overwrite(&self, config: &mut Config) {
         if let Some(color) = self.color {
             config.general.color = color;
+        }
+        if let Some(interval) = self.interval {
+            config.general.interval = interval;
         }
         if let Some(x_pos) = self.x_pos {
             config.position.x = x_pos;

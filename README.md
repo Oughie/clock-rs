@@ -63,13 +63,14 @@ You can then run the executable via the `clock-rs` command.
 Usage: clock-rs [OPTIONS]
 
 Options:
-  -c, --color <COLOR>  Specify the clock color [possible values: white, black, red, green, blue, yellow, magenta, cyan, reset]
-  -x, --x-pos <X_POS>  Set the position along the horizontal axis [possible values: start, center, end]
-  -y, --y-pos <Y_POS>  Set the position along the vertical axis [possible values: start, center, end]
-      --fmt <FMT>      Use a custom date format, e.g. "%A, %B %dth %Y"
-  -t                   Use the 12h format
-  -h, --help           Print help
-  -V, --version        Print version
+  -c, --color <COLOR>        Specify the clock color [possible values: white, black, red, green, blue, yellow, magenta, cyan, reset]
+  -x, --x-pos <X_POS>        Set the position along the horizontal axis [possible values: start, center, end]
+  -y, --y-pos <Y_POS>        Set the position along the vertical axis [possible values: start, center, end]
+      --fmt <FMT>            Use a custom date format, e.g. "%A, %B %dth %Y"
+  -t                         Use the 12h format
+  -i, --interval <INTERVAL>  Set the poll interval in milliseconds
+  -h, --help                 Print help
+  -V, --version              Print version
 ```
 
 ## Configuration
@@ -88,21 +89,23 @@ An example `conf.toml` could look like this:
 
 ```toml
 [general]
-# Specify the color of the clock
+# Specify the color of the clock (= "white")
 # Possible values are: white, black, red, green, blue, yellow, magenta, cyan, reset (none)
 color = "magenta"
+# Set the poll intervall in milliseconds (= 1000)
+interval = 999
 
 [position]
-# Specify the position along the horizontal and vertical axis
+# Specify the position along the horizontal and vertical axis (= "center")
 # Possible values are: start, center, end
-horizontal = "center"
-vertical = "center"
+horizontal = "start"
+vertical = "end"
 
 [date]
-# Set a custom date format
+# Set a custom date format (= "%d-%M-%Y")
 fmt = "%A, %B %dth %Y"
-# Specify, whether to use the 12 hour format
-use_12h = false
+# Specify, whether to use the 12 hour format (= "false")
+use_12h = true
 ```
 
 ## Contributing

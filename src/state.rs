@@ -1,7 +1,6 @@
 use std::{
     io::{self, Write},
-    thread,
-    time::{Duration, Instant},
+    time::Duration,
 };
 
 use crate::{clock::Clock, config::Config};
@@ -18,7 +17,7 @@ enum Message {
 }
 pub struct State<'a> {
     clock: Clock<'a>,
-    update_interval: Duration,
+    interval: Duration,
 }
 
 impl<'a> State<'a> {
@@ -30,7 +29,7 @@ impl<'a> State<'a> {
 
         Ok(Self {
             clock,
-            update_interval: Duration::from_secs(1),
+            interval: Duration::from_millis(config.general.interval),
         })
     }
 
@@ -42,20 +41,14 @@ impl<'a> State<'a> {
 
         self.render()?;
 
-        let mut last_update = Instant::now();
-
         loop {
-            if last_update.elapsed().as_secs() >= 1 {
-                self.render()?;
-                last_update = Instant::now();
-            }
+            self.render()?;
             if let Some(msg) = self.handle_events()? {
                 match msg {
                     Message::RedrawRequested => self.render()?,
                     Message::Exit => break,
                 }
             }
-            thread::sleep(self.update_interval);
         }
 
         self.close()
@@ -76,12 +69,11 @@ impl<'a> State<'a> {
     fn close(self) -> io::Result<()> {
         let mut stdout = io::stdout();
         execute!(stdout, MoveTo(0, 0), Clear(ClearType::All), Show)?;
-        terminal::disable_raw_mode()?;
-        Ok(())
+        terminal::disable_raw_mode()
     }
 
     fn handle_events(&mut self) -> io::Result<Option<Message>> {
-        Ok(if event::poll(Duration::from_millis(10))? {
+        Ok(if event::poll(self.interval)? {
             match event::read()? {
                 Event::Key(key_event) => match key_event {
                     KeyEvent {

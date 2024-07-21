@@ -9,10 +9,20 @@ pub struct Config {
     pub date: DateConfig,
 }
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Debug, Deserialize)]
 #[serde(default)]
 pub struct GeneralConfig {
     pub color: Color,
+    pub interval: u64,
+}
+
+impl Default for GeneralConfig {
+    fn default() -> Self {
+        Self {
+            interval: 1000,
+            color: Color::default(),
+        }
+    }
 }
 
 #[derive(Debug, Default, Deserialize)]
