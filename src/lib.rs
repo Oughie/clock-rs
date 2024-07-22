@@ -8,14 +8,11 @@ mod position;
 mod segment;
 mod state;
 
-use std::env::VarError;
-use std::fs;
+use std::{env::VarError, fs};
 
 use clap::Parser;
-use config::Config;
 
-use crate::cli::Args;
-use crate::state::State;
+use crate::{cli::Args, config::Config, state::State};
 
 pub fn run() -> Result<(), String> {
     let file_path = match std::env::var("CONF_PATH") {

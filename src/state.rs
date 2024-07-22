@@ -3,13 +3,14 @@ use std::{
     time::Duration,
 };
 
-use crate::{clock::Clock, config::Config};
 use crossterm::{
     cursor::{Hide, MoveTo, Show},
     event::{self, Event, KeyCode, KeyEvent},
     execute,
     terminal::{self, Clear, ClearType},
 };
+
+use crate::{clock::Clock, config::Config};
 
 enum Message {
     RedrawRequested,

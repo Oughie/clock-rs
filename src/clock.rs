@@ -76,6 +76,7 @@ impl fmt::Display for Clock<'_> {
             for (i, component) in [hour, minute, second].iter().enumerate() {
                 let i0 = CharacterDisplay::new(self.color, Character::Num(component / 10), row);
                 let i1 = CharacterDisplay::new(self.color, Character::Num(component % 10), row);
+
                 write!(f, "{i0}{i1}")?;
 
                 if i < 2 {
