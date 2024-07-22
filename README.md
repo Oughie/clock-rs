@@ -71,6 +71,7 @@ Options:
       --fmt <FMT>            Use a custom date format, e.g. "%A, %B %dth %Y"
   -t                         Use the 12h format
   -i, --interval <INTERVAL>  Set the poll interval in milliseconds
+      --utc                  Use UTC time
   -h, --help                 Print help
   -V, --version              Print version
 ```
@@ -106,8 +107,10 @@ vertical = "end"
 [date]
 # Set a custom date format (= "%d-%M-%Y")
 fmt = "%A, %B %dth %Y"
-# Specify, whether to use the 12 hour format (= false)
+# Specify whether to use the 12 hour format (= false)
 use_12h = true
+# Specify whether to use UTC time
+utc = true
 ```
 
 ## Contributing

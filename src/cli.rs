@@ -23,6 +23,9 @@ pub struct Args {
     #[clap(long, short)]
     #[clap(help = "Set the poll interval in milliseconds")]
     pub interval: Option<u64>,
+    #[clap(long)]
+    #[clap(help = "Use UTC time")]
+    pub utc: bool,
 }
 
 impl Args {
@@ -44,6 +47,9 @@ impl Args {
         }
         if self.use_12h {
             config.date.use_12h = true;
+        }
+        if self.utc {
+            config.date.utc = true;
         }
     }
 }

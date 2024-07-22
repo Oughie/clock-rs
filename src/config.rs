@@ -3,6 +3,7 @@ use serde::Deserialize;
 use crate::{color::Color, position::Position};
 
 #[derive(Debug, Default, Deserialize)]
+#[serde(default)]
 pub struct Config {
     pub general: GeneralConfig,
     pub position: PositionConfig,
@@ -35,10 +36,11 @@ pub struct PositionConfig {
 }
 
 #[derive(Debug, Deserialize)]
+#[serde(default)]
 pub struct DateConfig {
-    #[serde(default)]
     pub fmt: String,
     pub use_12h: bool,
+    pub utc: bool,
 }
 
 impl Default for DateConfig {
@@ -46,6 +48,7 @@ impl Default for DateConfig {
         Self {
             fmt: "%d-%M-%Y".into(),
             use_12h: false,
+            utc: false,
         }
     }
 }

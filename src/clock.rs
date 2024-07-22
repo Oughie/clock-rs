@@ -1,6 +1,6 @@
 use std::{fmt, io};
 
-use chrono::{Local, Timelike};
+use chrono::{Local, Timelike, Utc};
 
 use crate::{
     character::Character, character_display::CharacterDisplay, color::Color, config::Config,
@@ -17,12 +17,13 @@ pub struct Clock<'a> {
     top_pad: String,
     date_use_12h: bool,
     date_left_pad: String,
+    date_use_utc: bool,
 }
 
 impl<'a> Clock<'a> {
     const HALF_WIDTH: usize = 26;
     const HALF_HEIGHT: usize = 3;
-    const SUFFIX_LEN: usize = 6;
+    const SUFFIX_LEN: usize = 5;
     const AM_SUFFIX: &'static str = " [AM]";
     const PM_SUFFIX: &'static str = " [PM]";
 
@@ -33,14 +34,18 @@ impl<'a> Clock<'a> {
             color: config.general.color,
             date_format: &config.date.fmt,
             date_use_12h: config.date.use_12h,
+            date_use_utc: config.date.utc,
             ..Default::default()
         })
     }
 
     pub fn update_position(&mut self, width: u16, height: u16) {
-        let local = Local::now();
-        let date_display = local.format(self.date_format).to_string();
-        let date_display_len = date_display.len()
+        let date_display = if self.date_use_utc {
+            Utc::now().format(self.date_format)
+        } else {
+            Local::now().format(self.date_format)
+        };
+        let date_display_len = date_display.to_string().len()
             + if self.date_use_12h {
                 Self::SUFFIX_LEN
             } else {
@@ -57,12 +62,21 @@ impl<'a> Clock<'a> {
 
 impl fmt::Display for Clock<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let local = Local::now();
-        let mut hour = local.hour();
-        let minute = local.minute();
-        let second = local.second();
+        let (mut hour, minute, second);
 
-        let mut date_display = local.format(self.date_format).to_string();
+        let mut date_display = if self.date_use_utc {
+            let utc = Utc::now();
+            hour = utc.hour();
+            minute = utc.minute();
+            second = utc.second();
+            utc.format(self.date_format).to_string()
+        } else {
+            let local = Local::now();
+            hour = local.hour();
+            minute = local.minute();
+            second = local.second();
+            local.format(self.date_format).to_string()
+        };
 
         if self.date_use_12h {
             let suffix = if hour < 12 {
