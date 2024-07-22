@@ -22,6 +22,10 @@ pub struct Clock<'a> {
 }
 
 impl<'a> Clock<'a> {
+    const HALF_WIDTH: u16 = 26;
+    const HALF_HEIGHT: u16 = 3;
+    const SUFFIX_LEN: u16 = 5;
+
     pub fn new(config: &'a Config) -> io::Result<Self> {
         Ok(Self {
             x_pos: config.position.x,
@@ -36,13 +40,18 @@ impl<'a> Clock<'a> {
     pub fn update_position(&mut self, width: u16, height: u16) {
         let local = Local::now();
         let date_display = local.format(self.date_format).to_string();
-        let date_display_len = date_display.len() as u16 + if self.date_use_12h { 3 } else { 0 };
+        let date_display_len = date_display.len() as u16
+            + if self.date_use_12h {
+                Self::SUFFIX_LEN
+            } else {
+                0
+            };
 
-        self.x = self.x_pos.calc(width, 26);
-        self.y = self.y_pos.calc(height, 3);
+        self.x = self.x_pos.calc(width, Self::HALF_WIDTH);
+        self.y = self.y_pos.calc(height, Self::HALF_HEIGHT);
         self.left_pad = (0..self.x).map(|_| ' ').collect();
         self.top_pad = (0..self.y).map(|_| '\n').collect();
-        self.date_left_pad = (0..self.x + 26_u16.saturating_sub(date_display_len / 2))
+        self.date_left_pad = (0..self.x + Self::HALF_WIDTH.saturating_sub(date_display_len / 2))
             .map(|_| ' ')
             .collect();
     }

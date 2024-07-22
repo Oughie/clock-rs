@@ -11,11 +11,11 @@ pub enum Position {
 }
 
 impl Position {
-    pub fn calc(&self, len: u16, clock_width: u16) -> u16 {
+    pub fn calc(&self, len: u16, offset: u16) -> u16 {
         match self {
             Self::Start => 1,
-            Self::Center => (len / 2).saturating_sub(clock_width),
-            Self::End => len.saturating_sub(clock_width * 2),
+            Self::Center => (len / 2).saturating_sub(offset),
+            Self::End => len.saturating_sub(offset * 2),
         }
     }
 }
