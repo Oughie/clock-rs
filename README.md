@@ -95,11 +95,11 @@ Here's an example `conf.toml` file setup:
 # Specify the color of the clock (= "white")
 # Possible values are: white, black, red, green, blue, yellow, magenta, cyan)
 color = "magenta"
-# Set the poll intervall in milliseconds (= 1000)
+# Set the polling intervall in milliseconds (= 1000)
 interval = 999
 
 [position]
-# Specify the position along the horizontal and vertical axis (= "center")
+# Specify the position along the horizontal and vertical axes (= "center")
 # Possible values are: start, center, end
 horizontal = "start"
 vertical = "end"
@@ -109,7 +109,7 @@ vertical = "end"
 fmt = "%A, %B %dth %Y"
 # Specify whether to use the 12 hour format (= false)
 use_12h = true
-# Specify whether to use UTC time
+# Specify whether to use UTC time (= false)
 utc = true
 ```
 
