@@ -51,8 +51,8 @@ Optionally, you can make the file globally executable.
 On Linux, run the following commands:  
 
 ```
-$ chmod +x target/release/clock-rs
 $ sudo cp target/release/clock-rs /usr/local/bin/
+$ chmod +x target/release/clock-rs
 ```
 
 You can then run the executable via the `clock-rs` command.
@@ -63,7 +63,7 @@ You can then run the executable via the `clock-rs` command.
 Usage: clock-rs [OPTIONS]
 
 Options:
-  -c, --color <COLOR>        Specify the clock color [possible values: white, black, red, green, blue, yellow, magenta, cyan, reset]
+  -c, --color <COLOR>        Specify the clock color [possible values: white, black, red, green, blue, yellow, magenta, cyan]
   -x, --x-pos <X_POS>        Set the position along the horizontal axis [possible values: start, center, end]
   -y, --y-pos <Y_POS>        Set the position along the vertical axis [possible values: start, center, end]
       --fmt <FMT>            Use a custom date format, e.g. "%A, %B %dth %Y"
@@ -85,7 +85,7 @@ Any argument passed in the command line will overwrite these settings.
 
 ### Example
 
-An example `conf.toml` could look like this:
+Here's an example `conf.toml` file setup:
 
 ```toml
 [general]
@@ -115,6 +115,6 @@ Any help is appreciated!
 
 ## License
 
-Copyright © 2024 Oughie oughery@gmail.com
+Copyright © 2024 Oughie
 
 This repository is licensed under the Apache License 2.0 - See [LICENSE](LICENSE) for more information.

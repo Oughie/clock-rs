@@ -13,7 +13,6 @@ pub enum Color {
     Yellow,
     Magenta,
     Cyan,
-    Reset,
 }
 
 impl Color {
@@ -27,7 +26,6 @@ impl Color {
             Self::Yellow => "\x1B[33m",
             Self::Magenta => "\x1B[35m",
             Self::Cyan => "\x1B[36m",
-            Self::Reset => "\x1B[0m",
         }
     }
     pub const fn background(&self) -> &'static str {
@@ -40,7 +38,6 @@ impl Color {
             Self::Yellow => "\x1B[43m",
             Self::Magenta => "\x1B[45m",
             Self::Cyan => "\x1B[46m",
-            Self::Reset => "\x1B[0m",
         }
     }
 }

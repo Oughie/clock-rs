@@ -12,15 +12,15 @@ pub enum Segment {
 
 impl Segment {
     pub fn fmt(&self, color: Color) -> String {
-        let color_bg = color.background();
-        let reset = Color::Reset.background();
+        let color = color.background();
+        let reset = "\x1B[0m";
 
         match self {
-            Self::Full => format!("{color_bg}      {reset} "),
-            Self::Left => format!("{color_bg}  {reset}     "),
-            Self::Center => format!(" {color_bg}  {reset}  "),
-            Self::Right => format!("    {color_bg}  {reset} "),
-            Self::Sides => format!("{color_bg}  {reset}  {color_bg}  {reset} "),
+            Self::Full => format!("{color}      {reset} "),
+            Self::Left => format!("{color}  {reset}     "),
+            Self::Center => format!(" {color}  {reset}  "),
+            Self::Right => format!("    {color}  {reset} "),
+            Self::Sides => format!("{color}  {reset}  {color}  {reset} "),
             Self::Empty => String::from("     "),
         }
     }

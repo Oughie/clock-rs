@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use clap::ValueEnum;
 use serde::Deserialize;
 
@@ -19,18 +17,5 @@ impl Position {
             Self::Center => (len / 2).saturating_sub(clock_width),
             Self::End => len.saturating_sub(clock_width * 2),
         }
-    }
-}
-
-impl FromStr for Position {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        Ok(match s {
-            "start" => Self::Start,
-            "center" => Self::Center,
-            "end" => Self::End,
-            _ => return Err(format!("position {s} does not exist.")),
-        })
     }
 }
