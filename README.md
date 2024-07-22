@@ -20,16 +20,18 @@ clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal
 
 ## Why choose clock-rs?
 
-Why use clock-rs over tty-clock? clock-rs ...
+Why use clock-rs over tty-clock?
+
+clock-rs ...
 - ... uses a configuration file for managing its settings, alongside with the ability to overwrite them through the command line,
-- ... is built in Rust, ensuring safety as well as efficiency, while also allowing for quick development,
+- ... is built in Rust, allowing for safety as well as quick development,
 - ... and will receive more updates in the future!
 
 ## Installation
 
 ### Dependencies
 
-To install clock-rs, ensure you have [Rust](https://www.rust-lang.org/) along with Cargo installed.
+To install clock-rs from source, ensure you have [Rust](https://www.rust-lang.org/) along with Cargo installed.
 
 ### Steps
 
@@ -37,7 +39,7 @@ To install clock-rs, ensure you have [Rust](https://www.rust-lang.org/) along wi
 
     `$ git clone https://github.com/Oughie/clock-rs`
 
-2. Navigate into the created directory
+2. Navigate into the new directory
 
     `$ cd clock-rs`
 
