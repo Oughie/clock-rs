@@ -40,8 +40,6 @@ impl<'a> State<'a> {
         terminal::enable_raw_mode()?;
         execute!(stdout, Clear(ClearType::All), Hide)?;
 
-        self.render()?;
-
         loop {
             self.render()?;
             if let Some(msg) = self.handle_events()? {
@@ -69,6 +67,7 @@ impl<'a> State<'a> {
 
     fn close(self) -> io::Result<()> {
         let mut stdout = io::stdout();
+
         execute!(stdout, MoveTo(0, 0), Clear(ClearType::All), Show)?;
         terminal::disable_raw_mode()
     }

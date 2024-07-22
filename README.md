@@ -112,7 +112,7 @@ use_12h = true
 
 ## Contributing
 
-Feel free to report bugs, suggest features or contribute code.
+Feel free to report bugs, suggest features or contribute code.  
 Any help is appreciated!
 
 ## License

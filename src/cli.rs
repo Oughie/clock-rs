@@ -42,6 +42,8 @@ impl Args {
         if let Some(fmt) = self.fmt.clone() {
             config.date.fmt = fmt;
         }
-        config.date.use_12h = self.use_12h;
+        if self.use_12h {
+            config.date.use_12h = true;
+        }
     }
 }

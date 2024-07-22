@@ -11,7 +11,7 @@ pub enum Position {
 }
 
 impl Position {
-    pub fn calc(&self, len: u16, offset: u16) -> u16 {
+    pub fn calc(&self, len: usize, offset: usize) -> usize {
         match self {
             Self::Start => 1,
             Self::Center => (len / 2).saturating_sub(offset),

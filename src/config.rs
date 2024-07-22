@@ -44,7 +44,7 @@ pub struct DateConfig {
 impl Default for DateConfig {
     fn default() -> Self {
         Self {
-            fmt: String::from("%d-%M-%Y"),
+            fmt: "%d-%M-%Y".into(),
             use_12h: false,
         }
     }

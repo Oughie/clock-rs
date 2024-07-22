@@ -6,18 +6,19 @@ pub enum Character {
 }
 
 impl Character {
-    pub const CHARACTERS: [Segment; 55] = [
+    pub const COLON: [Segment; 5] = [Empty, Center, Empty, Center, Empty];
+
+    pub const NUMBERS: [Segment; 50] = [
         Full, Sides, Sides, Sides, Full, Right, Right, Right, Right, Right, Full, Right, Full,
         Left, Full, Full, Right, Full, Right, Full, Sides, Sides, Full, Right, Right, Full, Left,
         Full, Right, Full, Full, Left, Full, Sides, Full, Full, Right, Right, Right, Right, Full,
-        Sides, Full, Sides, Full, Full, Sides, Full, Right, Full, Empty, Center, Empty, Center,
-        Empty,
+        Sides, Full, Sides, Full, Full, Sides, Full, Right, Full,
     ];
 
     pub fn segment(&self, row: usize) -> Segment {
         match self {
-            Self::Num(n) => Self::CHARACTERS[*n as usize * 5 + row],
-            Self::Colon => Self::CHARACTERS[50 + row],
+            Self::Num(n) => Self::NUMBERS[*n as usize * 5 + row],
+            Self::Colon => Self::COLON[row],
         }
     }
 }

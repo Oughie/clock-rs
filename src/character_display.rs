@@ -9,7 +9,7 @@ pub struct CharacterDisplay {
 }
 
 impl CharacterDisplay {
-    pub fn new(color: Color, character: Character, row: usize) -> Self {
+    pub fn new(character: Character, color: Color, row: usize) -> Self {
         Self {
             color,
             character,
