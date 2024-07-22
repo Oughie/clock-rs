@@ -5,17 +5,13 @@ use std::{
 
 use crossterm::{
     cursor::{Hide, MoveTo, Show},
-    event::{self, Event, KeyCode, KeyEvent},
+    event::{self, Event, KeyCode, KeyEvent, KeyModifiers},
     execute,
     terminal::{self, Clear, ClearType},
 };
 
 use crate::{clock::Clock, config::Config};
 
-enum Message {
-    RedrawRequested,
-    Exit,
-}
 pub struct State<'a> {
     clock: Clock<'a>,
     interval: Duration,
@@ -42,10 +38,25 @@ impl<'a> State<'a> {
 
         loop {
             self.render()?;
-            if let Some(msg) = self.handle_events()? {
-                match msg {
-                    Message::RedrawRequested => self.render()?,
-                    Message::Exit => break,
+            if event::poll(self.interval)? {
+                match event::read()? {
+                    Event::Key(key_event) => match key_event {
+                        KeyEvent {
+                            code: KeyCode::Esc | KeyCode::Char('q'),
+                            modifiers: KeyModifiers::NONE,
+                            ..
+                        } => break,
+                        KeyEvent {
+                            code: KeyCode::Char('c'),
+                            modifiers: KeyModifiers::CONTROL,
+                            ..
+                        } => break,
+                        _ => (),
+                    },
+                    Event::Resize(width, height) => {
+                        self.clock.update_position(width, height);
+                    }
+                    _ => (),
                 }
             }
         }
@@ -70,26 +81,5 @@ impl<'a> State<'a> {
 
         execute!(stdout, MoveTo(0, 0), Clear(ClearType::All), Show)?;
         terminal::disable_raw_mode()
-    }
-
-    fn handle_events(&mut self) -> io::Result<Option<Message>> {
-        Ok(if event::poll(self.interval)? {
-            match event::read()? {
-                Event::Key(key_event) => match key_event {
-                    KeyEvent {
-                        code: KeyCode::Esc | KeyCode::Char('q'),
-                        ..
-                    } => Some(Message::Exit),
-                    _ => None,
-                },
-                Event::Resize(width, height) => {
-                    self.clock.update_position(width, height);
-                    Some(Message::RedrawRequested)
-                }
-                _ => None,
-            }
-        } else {
-            None
-        })
     }
 }

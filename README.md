@@ -76,6 +76,8 @@ Options:
   -V, --version              Print version
 ```
 
+To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
+
 ## Configuration
 
 clock-rs uses the [TOML](https://toml.io/en/) file format for its settings.  
@@ -83,7 +85,7 @@ By default, the configuration file is named `conf.toml` and is stored in the OS 
 
 On Linux: `~/.config/clock-rs/conf.toml`
 
-This path can be changed using the environment variable `CONF_PATH`.  
+This path can be changed using the `CONF_PATH` environment variable.  
 Any argument passed in the command line will overwrite these settings.
 
 ### Example
@@ -95,8 +97,8 @@ Here's an example `conf.toml` file setup:
 # Specify the color of the clock (= "white")
 # Possible values are: white, black, red, green, blue, yellow, magenta, cyan)
 color = "magenta"
-# Set the polling intervall in milliseconds (= 1000)
-interval = 999
+# Set the interval in milliseconds (= 500)
+interval = 499
 
 [position]
 # Specify the position along the horizontal and vertical axes (= "center")

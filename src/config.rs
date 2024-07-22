@@ -20,7 +20,7 @@ pub struct GeneralConfig {
 impl Default for GeneralConfig {
     fn default() -> Self {
         Self {
-            interval: 1000,
+            interval: 500,
             color: Color::default(),
         }
     }
