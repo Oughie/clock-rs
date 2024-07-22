@@ -90,7 +90,7 @@ Here's an example `conf.toml` file setup:
 ```toml
 [general]
 # Specify the color of the clock (= "white")
-# Possible values are: white, black, red, green, blue, yellow, magenta, cyan, reset (none)
+# Possible values are: white, black, red, green, blue, yellow, magenta, cyan)
 color = "magenta"
 # Set the poll intervall in milliseconds (= 1000)
 interval = 999
