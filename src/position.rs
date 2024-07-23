@@ -4,8 +4,8 @@ use serde::Deserialize;
 #[derive(Clone, Copy, Debug, Default, Deserialize, ValueEnum)]
 #[serde(rename_all = "lowercase")]
 pub enum Position {
-    #[default]
     Start,
+    #[default]
     Center,
     End,
 }
