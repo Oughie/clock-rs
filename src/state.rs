@@ -66,7 +66,13 @@ impl<'a> State<'a> {
 
     pub fn render(&self) -> io::Result<()> {
         let mut stdout = io::stdout();
+
         execute!(stdout, MoveTo(0, 0), Clear(ClearType::All))?;
+
+        let (width, height) = terminal::size()?;
+        if self.clock.is_too_large(width as usize, height as usize) {
+            return Ok(());
+        }
 
         let lock = stdout.lock();
         let mut w = io::BufWriter::new(lock);

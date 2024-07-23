@@ -26,7 +26,8 @@ impl<'a> Clock<'a> {
     const WIDTH_NO_SECONDS: usize = 32;
     const HALF_WIDTH: usize = Self::WIDTH / 2;
     const HALF_WIDTH_NO_SECONDS: usize = Self::WIDTH_NO_SECONDS / 2;
-    const HALF_HEIGHT: usize = 3;
+    const HEIGHT: usize = 7;
+    const HALF_HEIGHT: usize = Self::HEIGHT / 2;
     const SUFFIX_LEN: usize = 5;
     const AM_SUFFIX: &'static str = " [AM]";
     const PM_SUFFIX: &'static str = " [PM]";
@@ -50,18 +51,38 @@ impl<'a> Clock<'a> {
         } else {
             Local::now().format(self.date_format)
         };
+
         let date_display_len =
             date_display.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
+
         let half_width = if self.hide_seconds {
             Self::HALF_WIDTH_NO_SECONDS
         } else {
             Self::HALF_WIDTH
         };
+
         let x = self.x_pos.calc(width as usize, half_width);
         let y = self.y_pos.calc(height as usize, Self::HALF_HEIGHT);
+
         self.left_pad = " ".repeat(x);
         self.top_pad = "\n".repeat(y);
         self.date_left_pad = " ".repeat(x + half_width.saturating_sub(date_display_len / 2));
+    }
+
+    pub fn is_too_large(&self, width: usize, height: usize) -> bool {
+        if self.hide_seconds {
+            if Self::WIDTH_NO_SECONDS + 2 > width {
+                return true;
+            }
+        } else {
+            if Self::WIDTH + 2 > width {
+                return true;
+            }
+        }
+        if Self::HEIGHT + 2 > height {
+            return true;
+        }
+        false
     }
 }
 
