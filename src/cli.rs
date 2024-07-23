@@ -26,6 +26,9 @@ pub struct Args {
     #[clap(long)]
     #[clap(help = "Use UTC time")]
     pub utc: bool,
+    #[clap(long, short = 's')]
+    #[clap(help = "Do not show seconds")]
+    pub hide_seconds: bool,
 }
 
 impl Args {
@@ -50,6 +53,9 @@ impl Args {
         }
         if self.utc {
             config.date.utc = true;
+        }
+        if self.hide_seconds {
+            config.date.hide_seconds = true;
         }
     }
 }

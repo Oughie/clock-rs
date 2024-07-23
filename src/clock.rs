@@ -15,13 +15,17 @@ pub struct Clock<'a> {
     date_format: &'a str,
     left_pad: String,
     top_pad: String,
-    date_use_12h: bool,
+    use_12h: bool,
     date_left_pad: String,
-    date_use_utc: bool,
+    use_utc: bool,
+    hide_seconds: bool,
 }
 
 impl<'a> Clock<'a> {
-    const HALF_WIDTH: usize = 26;
+    const WIDTH: usize = 51;
+    const WIDTH_NO_SECONDS: usize = 32;
+    const HALF_WIDTH: usize = Self::WIDTH / 2;
+    const HALF_WIDTH_NO_SECONDS: usize = Self::WIDTH_NO_SECONDS / 2;
     const HALF_HEIGHT: usize = 3;
     const SUFFIX_LEN: usize = 5;
     const AM_SUFFIX: &'static str = " [AM]";
@@ -33,52 +37,59 @@ impl<'a> Clock<'a> {
             y_pos: config.position.y,
             color: config.general.color,
             date_format: &config.date.fmt,
-            date_use_12h: config.date.use_12h,
-            date_use_utc: config.date.utc,
+            use_12h: config.date.use_12h,
+            use_utc: config.date.utc,
+            hide_seconds: config.date.hide_seconds,
             ..Default::default()
         })
     }
 
     pub fn update_position(&mut self, width: u16, height: u16) {
-        let date_display = if self.date_use_utc {
+        let date_display = if self.use_utc {
             Utc::now().format(self.date_format)
         } else {
             Local::now().format(self.date_format)
         };
-        let date_display_len = date_display.to_string().len()
-            + if self.date_use_12h {
-                Self::SUFFIX_LEN
-            } else {
-                0
-            };
-
-        let x = self.x_pos.calc(width as usize, Self::HALF_WIDTH);
+        let date_display_len =
+            date_display.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
+        let half_width = if self.hide_seconds {
+            Self::HALF_WIDTH_NO_SECONDS
+        } else {
+            Self::HALF_WIDTH
+        };
+        let x = self.x_pos.calc(width as usize, half_width);
         let y = self.y_pos.calc(height as usize, Self::HALF_HEIGHT);
         self.left_pad = " ".repeat(x);
         self.top_pad = "\n".repeat(y);
-        self.date_left_pad = " ".repeat(x + Self::HALF_WIDTH.saturating_sub(date_display_len / 2));
+        self.date_left_pad = " ".repeat(x + half_width.saturating_sub(date_display_len / 2));
     }
 }
 
 impl fmt::Display for Clock<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (mut hour, minute, second);
+        let mut hour;
+        let minute;
+        let mut second = 0;
 
-        let mut date_display = if self.date_use_utc {
+        let mut date_display = if self.use_utc {
             let utc = Utc::now();
             hour = utc.hour();
             minute = utc.minute();
-            second = utc.second();
+            if !self.hide_seconds {
+                second = utc.second();
+            }
             utc.format(self.date_format).to_string()
         } else {
             let local = Local::now();
             hour = local.hour();
             minute = local.minute();
-            second = local.second();
+            if !self.hide_seconds {
+                second = local.second();
+            }
             local.format(self.date_format).to_string()
         };
 
-        if self.date_use_12h {
+        if self.use_12h {
             let suffix = if hour < 12 {
                 Self::AM_SUFFIX
             } else {
@@ -95,16 +106,22 @@ impl fmt::Display for Clock<'_> {
 
         writeln!(f, "{}", self.top_pad)?;
 
+        let components = if !self.hide_seconds {
+            vec![hour, minute, second]
+        } else {
+            vec![hour, minute]
+        };
+
         for row in 0..5 {
             write!(f, "{}", self.left_pad)?;
 
-            for (i, component) in [hour, minute, second].iter().enumerate() {
+            for (i, component) in components.iter().enumerate() {
                 let i0 = CharacterDisplay::new(Character::Num(component / 10), self.color, row);
                 let i1 = CharacterDisplay::new(Character::Num(component % 10), self.color, row);
 
                 write!(f, "{i0}{i1}")?;
 
-                if i < 2 {
+                if i < components.len() - 1 {
                     let colon = CharacterDisplay::new(Character::Colon, self.color, row);
                     write!(f, "{colon}")?;
                 }

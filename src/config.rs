@@ -41,6 +41,7 @@ pub struct DateConfig {
     pub fmt: String,
     pub use_12h: bool,
     pub utc: bool,
+    pub hide_seconds: bool,
 }
 
 impl Default for DateConfig {
@@ -49,6 +50,7 @@ impl Default for DateConfig {
             fmt: "%d-%M-%Y".into(),
             use_12h: false,
             utc: false,
+            hide_seconds: false,
         }
     }
 }

@@ -72,6 +72,7 @@ Options:
   -t                         Use the 12h format
   -i, --interval <INTERVAL>  Set the poll interval in milliseconds
       --utc                  Use UTC time
+  -s, --hide-seconds         Do not show seconds
   -h, --help                 Print help
   -V, --version              Print version
 ```
@@ -113,6 +114,8 @@ fmt = "%A, %B %dth %Y"
 use_12h = true
 # Specify whether to use UTC time (= false)
 utc = true
+# Specify whether to hide seconds (= false)
+hide_seconds = true
 ```
 
 ## Contributing
