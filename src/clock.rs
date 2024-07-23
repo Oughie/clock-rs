@@ -8,11 +8,11 @@ use crate::{
 };
 
 #[derive(Default)]
-pub struct Clock<'a> {
+pub struct Clock {
     x_pos: Position,
     y_pos: Position,
     color: Color,
-    date_format: &'a str,
+    date_format: String,
     left_pad: String,
     top_pad: String,
     use_12h: bool,
@@ -21,23 +21,20 @@ pub struct Clock<'a> {
     hide_seconds: bool,
 }
 
-impl<'a> Clock<'a> {
+impl Clock {
     const WIDTH: usize = 51;
     const WIDTH_NO_SECONDS: usize = 32;
-    const HALF_WIDTH: usize = Self::WIDTH / 2;
-    const HALF_WIDTH_NO_SECONDS: usize = Self::WIDTH_NO_SECONDS / 2;
     const HEIGHT: usize = 7;
-    const HALF_HEIGHT: usize = Self::HEIGHT / 2;
     const SUFFIX_LEN: usize = 5;
     const AM_SUFFIX: &'static str = " [AM]";
     const PM_SUFFIX: &'static str = " [PM]";
 
-    pub fn new(config: &'a Config) -> io::Result<Self> {
+    pub fn new(config: Config) -> io::Result<Self> {
         Ok(Self {
             x_pos: config.position.x,
             y_pos: config.position.y,
             color: config.general.color,
-            date_format: &config.date.fmt,
+            date_format: config.date.fmt,
             use_12h: config.date.use_12h,
             use_utc: config.date.utc,
             hide_seconds: config.date.hide_seconds,
@@ -47,22 +44,22 @@ impl<'a> Clock<'a> {
 
     pub fn update_position(&mut self, width: u16, height: u16) {
         let date_display = if self.use_utc {
-            Utc::now().format(self.date_format)
+            Utc::now().format(&self.date_format)
         } else {
-            Local::now().format(self.date_format)
+            Local::now().format(&self.date_format)
         };
 
         let date_display_len =
             date_display.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
 
         let half_width = if self.hide_seconds {
-            Self::HALF_WIDTH_NO_SECONDS
+            Self::WIDTH_NO_SECONDS / 2
         } else {
-            Self::HALF_WIDTH
+            Self::WIDTH / 2
         };
 
-        let x = self.x_pos.calc(width as usize, half_width);
-        let y = self.y_pos.calc(height as usize, Self::HALF_HEIGHT);
+        let x = self.x_pos.calc(width.into(), half_width);
+        let y = self.y_pos.calc(height.into(), Self::HEIGHT / 2);
 
         self.left_pad = " ".repeat(x);
         self.top_pad = "\n".repeat(y);
@@ -74,10 +71,8 @@ impl<'a> Clock<'a> {
             if Self::WIDTH_NO_SECONDS + 2 > width {
                 return true;
             }
-        } else {
-            if Self::WIDTH + 2 > width {
-                return true;
-            }
+        } else if Self::WIDTH + 2 > width {
+            return true;
         }
         if Self::HEIGHT + 2 > height {
             return true;
@@ -86,28 +81,24 @@ impl<'a> Clock<'a> {
     }
 }
 
-impl fmt::Display for Clock<'_> {
+impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let mut hour;
-        let minute;
-        let mut second = 0;
-
-        let mut date_display = if self.use_utc {
-            let utc = Utc::now();
-            hour = utc.hour();
-            minute = utc.minute();
-            if !self.hide_seconds {
-                second = utc.second();
-            }
-            utc.format(self.date_format).to_string()
+        let (mut hour, minute, second, mut date_display) = if self.use_utc {
+            let time = Utc::now();
+            (
+                time.hour(),
+                time.minute(),
+                if self.hide_seconds { 0 } else { time.second() },
+                time.format(&self.date_format).to_string(),
+            )
         } else {
-            let local = Local::now();
-            hour = local.hour();
-            minute = local.minute();
-            if !self.hide_seconds {
-                second = local.second();
-            }
-            local.format(self.date_format).to_string()
+            let time = Local::now();
+            (
+                time.hour(),
+                time.minute(),
+                if self.hide_seconds { 0 } else { time.second() },
+                time.format(&self.date_format).to_string(),
+            )
         };
 
         if self.use_12h {
@@ -116,6 +107,7 @@ impl fmt::Display for Clock<'_> {
             } else {
                 Self::PM_SUFFIX
             };
+
             date_display.push_str(suffix);
 
             if hour > 12 {
@@ -125,27 +117,23 @@ impl fmt::Display for Clock<'_> {
             }
         }
 
+        let color = self.color;
+
         writeln!(f, "{}", self.top_pad)?;
 
-        let components = if !self.hide_seconds {
-            vec![hour, minute, second]
-        } else {
-            vec![hour, minute]
-        };
-
         for row in 0..5 {
-            write!(f, "{}", self.left_pad)?;
+            let colon = CharacterDisplay::new(Character::Colon, color, row);
+            let h0 = CharacterDisplay::new(Character::Num(hour / 10), color, row);
+            let h1 = CharacterDisplay::new(Character::Num(hour % 10), color, row);
+            let m0 = CharacterDisplay::new(Character::Num(minute / 10), color, row);
+            let m1 = CharacterDisplay::new(Character::Num(minute % 10), color, row);
 
-            for (i, component) in components.iter().enumerate() {
-                let i0 = CharacterDisplay::new(Character::Num(component / 10), self.color, row);
-                let i1 = CharacterDisplay::new(Character::Num(component % 10), self.color, row);
+            write!(f, "{}{h0}{h1}{colon}{m0}{m1}", self.left_pad)?;
 
-                write!(f, "{i0}{i1}")?;
-
-                if i < components.len() - 1 {
-                    let colon = CharacterDisplay::new(Character::Colon, self.color, row);
-                    write!(f, "{colon}")?;
-                }
+            if !self.hide_seconds {
+                let s0 = CharacterDisplay::new(Character::Num(second / 10), color, row);
+                let s1 = CharacterDisplay::new(Character::Num(second % 10), color, row);
+                write!(f, "{colon}{s0}{s1}")?;
             }
 
             writeln!(f, "\r")?;

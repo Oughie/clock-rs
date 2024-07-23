@@ -37,7 +37,7 @@ pub fn run() -> Result<(), String> {
 
     args.overwrite(&mut config);
 
-    State::new(&config)
+    State::new(config)
         .map_err(|err| err.to_string())?
         .run()
         .map_err(|err| err.to_string())

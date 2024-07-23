@@ -1,6 +1,5 @@
 use crate::color::Color;
 
-#[derive(Clone, Copy)]
 pub enum Segment {
     Full,
     Left,

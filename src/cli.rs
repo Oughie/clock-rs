@@ -2,8 +2,8 @@ use clap::Parser;
 
 use crate::{color::Color, config::Config, position::Position};
 
-#[derive(Debug, Parser)]
-#[clap(version = "v0.1.0")]
+#[derive(Parser)]
+#[clap(version = "v0.1.0, (C) 2024 Oughie")]
 pub struct Args {
     #[clap(long, short, value_enum)]
     #[clap(help = "Specify the clock color")]
@@ -32,7 +32,7 @@ pub struct Args {
 }
 
 impl Args {
-    pub fn overwrite(&self, config: &mut Config) {
+    pub fn overwrite(self, config: &mut Config) {
         if let Some(color) = self.color {
             config.general.color = color;
         }
@@ -45,7 +45,7 @@ impl Args {
         if let Some(y_pos) = self.y_pos {
             config.position.y = y_pos;
         }
-        if let Some(fmt) = self.fmt.clone() {
+        if let Some(fmt) = self.fmt {
             config.date.fmt = fmt;
         }
         if self.use_12h {

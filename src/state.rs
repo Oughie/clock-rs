@@ -12,21 +12,22 @@ use crossterm::{
 
 use crate::{clock::Clock, config::Config};
 
-pub struct State<'a> {
-    clock: Clock<'a>,
+pub struct State {
+    clock: Clock,
     interval: Duration,
 }
 
-impl<'a> State<'a> {
-    pub fn new(config: &'a Config) -> io::Result<Self> {
+impl State {
+    pub fn new(config: Config) -> io::Result<Self> {
         let (width, height) = terminal::size()?;
 
+        let interval = config.general.interval;
         let mut clock = Clock::new(config)?;
         clock.update_position(width, height);
 
         Ok(Self {
             clock,
-            interval: Duration::from_millis(config.general.interval),
+            interval: Duration::from_millis(interval),
         })
     }
 
@@ -70,7 +71,7 @@ impl<'a> State<'a> {
         execute!(stdout, MoveTo(0, 0), Clear(ClearType::All))?;
 
         let (width, height) = terminal::size()?;
-        if self.clock.is_too_large(width as usize, height as usize) {
+        if self.clock.is_too_large(width.into(), height.into()) {
             return Ok(());
         }
 

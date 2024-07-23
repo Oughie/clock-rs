@@ -1,7 +1,7 @@
 use clap::ValueEnum;
 use serde::Deserialize;
 
-#[derive(Clone, Copy, Debug, Default, Deserialize, ValueEnum)]
+#[derive(Clone, Default, Deserialize, ValueEnum)]
 #[serde(rename_all = "lowercase")]
 pub enum Position {
     Start,

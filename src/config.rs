@@ -2,7 +2,7 @@ use serde::Deserialize;
 
 use crate::{color::Color, position::Position};
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Default, Deserialize)]
 #[serde(default)]
 pub struct Config {
     pub general: GeneralConfig,
@@ -10,7 +10,7 @@ pub struct Config {
     pub date: DateConfig,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Deserialize)]
 #[serde(default)]
 pub struct GeneralConfig {
     pub color: Color,
@@ -26,7 +26,7 @@ impl Default for GeneralConfig {
     }
 }
 
-#[derive(Debug, Default, Deserialize)]
+#[derive(Default, Deserialize)]
 #[serde(default)]
 pub struct PositionConfig {
     #[serde(rename = "horizontal")]
@@ -35,7 +35,7 @@ pub struct PositionConfig {
     pub y: Position,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Deserialize)]
 #[serde(default)]
 pub struct DateConfig {
     pub fmt: String,
