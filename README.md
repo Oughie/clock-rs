@@ -1,14 +1,15 @@
 # clock-rs
 
-![License](https://img.shields.io/github/license/Oughie/clock-rs)
+A modern, digital clock that _effortlessly_ runs in your terminal.
 
-clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal clock built in pure Rust.
+[![License](https://img.shields.io/github/license/Oughie/clock-rs)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Oughie/clock-rs)](https://github.com/Oughie/clock-rs/stargazers)
 
 ![presentation](public/preview.png)
 
 ## Table of Contents
 
-- [Why choose clock-rs?](#why-choose-clock-rs)
+- [Introduction](#introduction)
 - [Installation](#installation)
   - [Dependencies](#dependencies)
   - [Steps](#steps)
@@ -19,20 +20,18 @@ clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal
 - [Contributing](#contributing)
 - [License](#license)
 
-## Why Choose clock-rs?
+## Introduction
 
-Why use clock-rs over tty-clock?
-
-clock-rs ...
-- ... uses a configuration file for managing its settings, alongside with the ability to overwrite them through the command line,
-- ... is built in Rust, allowing for safety as well as quick development,
-- ... and will receive more updates in the future!
+`clock-rs` is a terminal-based clock written in Rust, designed to be a new alternative to [tty-clock](https://github.com/xorg62/tty-clock). It offers several additional improvements, which include:
+- the usage of a single configuration file to manage its settings, with the ability to overwrite them through the command line,
+- a greater flexibility along with many additional features,
+- and the active development that will bring many updates in the near future!
 
 ## Installation
 
 ### Dependencies
 
-To install clock-rs from source, ensure you have [Rust](https://www.rust-lang.org/) along with Cargo installed.
+To install `clock-rs` from source, ensure you have [Rust](https://www.rust-lang.org/) along with Cargo installed.
 
 ### Steps
 
