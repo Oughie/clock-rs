@@ -1,6 +1,6 @@
+mod args;
 mod character;
 mod character_display;
-mod cli;
 mod clock;
 mod color;
 mod config;
@@ -12,7 +12,7 @@ use std::{env::VarError, fs};
 
 use clap::Parser;
 
-use crate::{cli::Args, config::Config, state::State};
+use crate::{args::Args, config::Config, state::State};
 
 pub fn run() -> Result<(), String> {
     let args = Args::parse();

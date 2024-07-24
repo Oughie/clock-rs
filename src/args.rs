@@ -1,9 +1,19 @@
-use clap::Parser;
-
 use crate::{color::Color, config::Config, position::Position};
+use clap::{
+    builder::styling::{AnsiColor, Effects, Styles},
+    Parser,
+};
+
+fn styles() -> Styles {
+    Styles::styled()
+        .header(AnsiColor::Green.on_default() | Effects::BOLD)
+        .usage(AnsiColor::Green.on_default() | Effects::BOLD)
+        .literal(AnsiColor::Blue.on_default() | Effects::BOLD)
+        .placeholder(AnsiColor::BrightYellow.on_default())
+}
 
 #[derive(Parser)]
-#[clap(version = "v0.1.0, (C) 2024 Oughie")]
+#[clap(version = "v0.1.0, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
 pub struct Args {
     #[clap(long, short, value_enum)]
     #[clap(help = "Specify the clock color")]
@@ -15,13 +25,13 @@ pub struct Args {
     #[clap(help = "Set the position along the vertical axis")]
     pub y_pos: Option<Position>,
     #[clap(long, value_enum)]
-    #[clap(help = "Use a custom date format, e.g. \"%A, %B %dth %Y\"")]
+    #[clap(help = "Set the date format")]
     pub fmt: Option<String>,
     #[clap(short = 't')]
     #[clap(help = "Use the 12h format")]
     pub use_12h: bool,
     #[clap(long, short)]
-    #[clap(help = "Set the poll interval in milliseconds")]
+    #[clap(help = "Set the interval in milliseconds")]
     pub interval: Option<u64>,
     #[clap(long)]
     #[clap(help = "Use UTC time")]

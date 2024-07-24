@@ -47,7 +47,7 @@ pub struct DateConfig {
 impl Default for DateConfig {
     fn default() -> Self {
         Self {
-            fmt: "%d-%M-%Y".into(),
+            fmt: "%d-%m-%Y".into(),
             use_12h: false,
             utc: false,
             hide_seconds: false,
