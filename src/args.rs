@@ -31,7 +31,7 @@ pub struct Args {
     #[clap(help = "Use the 12h format")]
     pub use_12h: bool,
     #[clap(long, short)]
-    #[clap(help = "Set the interval in milliseconds")]
+    #[clap(help = "Set the polling interval in milliseconds")]
     pub interval: Option<u64>,
     #[clap(long)]
     #[clap(help = "Use UTC time")]

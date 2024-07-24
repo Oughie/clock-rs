@@ -22,10 +22,10 @@ A modern, digital clock that _effortlessly_ runs in your terminal.
 
 ## Introduction
 
-`clock-rs` is a terminal-based clock written in Rust, designed to be a new alternative to [tty-clock](https://github.com/xorg62/tty-clock). It offers several additional improvements, which include:
-- the usage of a single configuration file to manage its settings, with the ability to overwrite them through the command line,
-- a greater flexibility along with many additional features,
-- and the active development that will bring many updates in the near future!
+`clock-rs` is a terminal-based clock written in Rust, designed to be a new alternative to [tty-clock](https://github.com/xorg62/tty-clock). It offers several improvements, which include:
+- The usage of a single configuration file to manage its settings, with the ability to overwrite them through the command line,
+- Greater flexibility along with many additional features,
+- Active development that will bring many updates in the near future!
 
 ## Installation
 
@@ -50,7 +50,7 @@ To install `clock-rs` from source, ensure you have [Rust](https://www.rust-lang.
 After the build is complete, you can find the executable in the `target/release/` directory.  
 Optionally, you can make the file globally executable.
 
-On Linux, run the following commands:  
+On Linux, run the following commands:
 
 ```sh
 $ sudo cp target/release/clock-rs /usr/local/bin/
@@ -70,7 +70,7 @@ Options:
   -y, --y-pos <Y_POS>        Set the position along the vertical axis
       --fmt <FMT>            Set the date format
   -t                         Use the 12h format
-  -i, --interval <INTERVAL>  Set the interval in milliseconds
+  -i, --interval <INTERVAL>  Set the polling interval in milliseconds
       --utc                  Use UTC time
   -s, --hide-seconds         Do not show seconds
   -h, --help                 Print help
@@ -96,10 +96,10 @@ Here's a list of the available fields inside the `conf.toml` file.
 | Field                     | Description                                | Possible values                                                                                                                  | Default      |
 | ------------------------- | -------------------------------------------| ---------------------------------------------------------------------------------------------------------------------------------| ------------ |
 | `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`,`"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
-| `general.interval`        | Set the interval in milliseconds           | Any Unsigned Integer, e.g. `499`.                                                                                                | `500`        |
+| `general.interval`        | Set the polling interval in milliseconds   | Any Unsigned Integer, e.g. `499`.                                                                                                | `500`        |
 | `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                               | `"center"`   |
 | `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                               | `"center"`   |
-| `date.fmt`                | Set the date format                        | Any String, e.g. `%A, %B dth %Y`.                                                                                                | `"%d-%m-%Y"` |
+| `date.fmt`                | Specify the date format                    | Any String, e.g. `%A, %B dth %Y`.                                                                                                | `"%d-%m-%Y"` |
 | `date.use_12h`            | Use the 12h format                         | `true` or `false`.                                                                                                               | `false`      |
 | `date.utc`                | Use UTC time                               | `true` or `false`.                                                                                                               | `false`      |
 | `date.hide_seconds`       | Do not show seconds                        | `true` or `false`.                                                                                                               | `false`      |
