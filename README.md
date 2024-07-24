@@ -4,7 +4,7 @@
 
 clock-rs is a [tty-clock](https://github.com/xorg62/tty-clock)-inspired terminal clock built in pure Rust.
 
-![presentation](screenshots/preview.png)
+![presentation](public/preview.png)
 
 ## Table of Contents
 
@@ -92,10 +92,12 @@ Any argument passed in the command line will overwrite these settings.
 
 ### Fields
 
-| Field                     | Description                                | Possible values / Type                                                                                                           | Default      |
+Here's a list of the available fields inside the `conf.toml` file.
+
+| Field                     | Description                                | Possible values                                                                                                                  | Default      |
 | ------------------------- | -------------------------------------------| ---------------------------------------------------------------------------------------------------------------------------------| ------------ |
-| `general.color`           | Specify clock color                        | `"black"`, `"red"`, `"green"`, `"yellow"`,`"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
-| `general.interval`        | Set the interval in milliseconds           | Any unsigned integer, e.g. `499`.                                                                                                | `500`        |
+| `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`,`"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
+| `general.interval`        | Set the interval in milliseconds           | Any Unsigned Integer, e.g. `499`.                                                                                                | `500`        |
 | `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                               | `"center"`   |
 | `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                               | `"center"`   |
 | `date.fmt`                | Set the date format                        | Any String, e.g. `%A, %B dth %Y`.                                                                                                | `"%d-%m-%Y"` |
@@ -105,7 +107,7 @@ Any argument passed in the command line will overwrite these settings.
 
 ### Example
 
-Here's an example `conf.toml` file setup:
+The `conf.toml` file could look like this:
 
 ```toml
 [general]
@@ -122,6 +124,8 @@ use_12h = true
 utc = true
 hide_seconds = true
 ```
+
+The default configuration can be found [here](public/default.toml).
 
 ## Contributing
 

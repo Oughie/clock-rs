@@ -1,0 +1,13 @@
+[general]
+color = "white"
+interval = 500
+
+[position]
+horizontal = "center"
+vertical = "center"
+
+[date]
+fmt = "%d-%m-%Y"
+use_12h = false
+utc = false
+hide_seconds = false
