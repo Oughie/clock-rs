@@ -81,7 +81,7 @@ To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
 
 ## Configuration
 
-clock-rs uses the [TOML](https://toml.io/en/) file format for its settings.  
+`clock-rs` uses the [TOML](https://toml.io/en/) file format for its settings.  
 By default, the configuration file is named `conf.toml` and is stored in the OS configuration directory, within the `clock-rs` subdirectory.
 
 On Linux: `~/.config/clock-rs/conf.toml`
