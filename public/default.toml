@@ -1,3 +1,6 @@
+# This is the default configuration for clock-rs.
+# You can also leave out fields to produce the same effect.
+
 [general]
 color = "white"
 interval = 500
