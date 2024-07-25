@@ -23,9 +23,9 @@ A modern, digital clock that _effortlessly_ runs in your terminal.
 ## Introduction
 
 `clock-rs` is a terminal-based clock written in Rust, designed to be a new alternative to [tty-clock](https://github.com/xorg62/tty-clock). It offers several improvements, which include:
-- The usage of a single configuration file to manage its settings, with the ability to overwrite them through the command line,
-- Greater flexibility along with many additional features,
-- Active development that will bring many updates in the near future!
+- A single configuration file to manage its settings, with the ability to overwrite them through the command line,
+- Many additional features such as a timer, stopwatch, and greater flexibility,
+- And the active development that will bring many updates in the near future!
 
 ## Installation
 
@@ -62,7 +62,13 @@ You can then run the executable via the `clock-rs` command.
 ## Usage
 
 ```
-Usage: clock-rs [OPTIONS]
+Usage: clock-rs [OPTIONS] [COMMAND]
+
+Commands:
+  clock      Display the current time (default)
+  timer      Create a timer
+  stopwatch  Start a stopwatch
+  help       Print this message or the help of the given subcommand(s)
 
 Options:
   -c, --color <COLOR>        Specify the clock color
@@ -76,6 +82,9 @@ Options:
   -h, --help                 Print help
   -V, --version              Print version
 ```
+
+If no command is specified, the `clock` command is used by default.  
+Thus, running `$ clock-rs clock` or simply just `$ clock-rs`, will both display the current time.
 
 To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
 
@@ -93,16 +102,16 @@ Any argument passed in the command line will overwrite these settings.
 
 Here's a list of the available fields inside the `conf.toml` file.
 
-| Field                     | Description                                | Possible values                                                                                                                  | Default      |
-| ------------------------- | -------------------------------------------| ---------------------------------------------------------------------------------------------------------------------------------| ------------ |
-| `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`,`"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
-| `general.interval`        | Set the polling interval in milliseconds   | Any Unsigned Integer, e.g. `499`.                                                                                                | `500`        |
-| `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                               | `"center"`   |
-| `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                               | `"center"`   |
-| `date.fmt`                | Specify the date format                    | Any String, e.g. `%A, %B dth %Y`.                                                                                                | `"%d-%m-%Y"` |
-| `date.use_12h`            | Use the 12h format                         | `true` or `false`.                                                                                                               | `false`      |
-| `date.utc`                | Use UTC time                               | `true` or `false`.                                                                                                               | `false`      |
-| `date.hide_seconds`       | Do not show seconds                        | `true` or `false`.                                                                                                               | `false`      |
+| Field                     | Description                                | Possible values                                                                                                                   | Default      |
+| ------------------------- | -------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------| ------------ |
+| `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`, `"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
+| `general.interval`        | Set the polling interval in milliseconds   | Any Unsigned Integer, e.g. `499`.                                                                                                 | `500`        |
+| `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
+| `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
+| `date.fmt`                | Specify the date format                    | Any String, e.g. `%A, %B %d, %Y`.                                                                                                 | `"%d-%m-%Y"` |
+| `date.use_12h`            | Use the 12h format                         | `true` or `false`.                                                                                                                | `false`      |
+| `date.utc`                | Use UTC time                               | `true` or `false`.                                                                                                                | `false`      |
+| `date.hide_seconds`       | Do not show seconds                        | `true` or `false`.                                                                                                                | `false`      |
 
 ### Example
 
@@ -118,7 +127,7 @@ horizontal = "start"
 vertical = "end"
 
 [date]
-fmt = "%A, %B %dth %Y"
+fmt = "%A, %B %d, %Y"
 use_12h = true
 utc = true
 hide_seconds = true

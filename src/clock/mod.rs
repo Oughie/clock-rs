@@ -1,14 +1,19 @@
-use std::{fmt, io};
+pub mod clock_mode;
+pub mod time;
+pub mod time_count;
 
-use chrono::{Local, Timelike, Utc};
+use std::{fmt, io};
 
 use crate::{
     character::Character, character_display::CharacterDisplay, color::Color, config::Config,
     position::Position,
 };
 
+use clock_mode::ClockMode;
+
 #[derive(Default)]
 pub struct Clock {
+    pub mode: ClockMode,
     x_pos: Position,
     y_pos: Position,
     color: Color,
@@ -16,8 +21,7 @@ pub struct Clock {
     left_pad: String,
     top_pad: String,
     use_12h: bool,
-    date_left_pad: String,
-    use_utc: bool,
+    text_left_pad: String,
     hide_seconds: bool,
 }
 
@@ -29,28 +33,23 @@ impl Clock {
     const AM_SUFFIX: &'static str = " [AM]";
     const PM_SUFFIX: &'static str = " [PM]";
 
-    pub fn new(config: Config) -> io::Result<Self> {
+    pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
         Ok(Self {
+            mode,
             x_pos: config.position.x,
             y_pos: config.position.y,
             color: config.general.color,
             date_format: config.date.fmt,
             use_12h: config.date.use_12h,
-            use_utc: config.date.utc,
             hide_seconds: config.date.hide_seconds,
             ..Default::default()
         })
     }
 
     pub fn update_position(&mut self, width: u16, height: u16) {
-        let date_display = if self.use_utc {
-            Utc::now().format(&self.date_format)
-        } else {
-            Local::now().format(&self.date_format)
-        };
+        let text = self.mode.text(&self.date_format);
 
-        let date_display_len =
-            date_display.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
+        let text_len = text.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
 
         let half_width = if self.hide_seconds {
             Self::WIDTH_NO_SECONDS / 2
@@ -63,7 +62,7 @@ impl Clock {
 
         self.left_pad = " ".repeat(x);
         self.top_pad = "\n".repeat(y);
-        self.date_left_pad = " ".repeat(x + half_width.saturating_sub(date_display_len / 2));
+        self.text_left_pad = " ".repeat(x + half_width.saturating_sub(text_len / 2));
     }
 
     pub fn is_too_large(&self, width: usize, height: usize) -> bool {
@@ -83,32 +82,16 @@ impl Clock {
 
 impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (mut hour, minute, second, mut date_display) = if self.use_utc {
-            let time = Utc::now();
-            (
-                time.hour(),
-                time.minute(),
-                if self.hide_seconds { 0 } else { time.second() },
-                time.format(&self.date_format).to_string(),
-            )
-        } else {
-            let time = Local::now();
-            (
-                time.hour(),
-                time.minute(),
-                if self.hide_seconds { 0 } else { time.second() },
-                time.format(&self.date_format).to_string(),
-            )
-        };
+        let (mut hour, minute, second, mut text) = self.mode.get_time(&self.date_format);
 
-        if self.use_12h {
+        if self.use_12h && self.mode.is_time() {
             let suffix = if hour < 12 {
                 Self::AM_SUFFIX
             } else {
                 Self::PM_SUFFIX
             };
 
-            date_display.push_str(suffix);
+            text.push_str(suffix);
 
             if hour > 12 {
                 hour -= 12;
@@ -141,8 +124,8 @@ impl fmt::Display for Clock {
 
         writeln!(
             f,
-            "\n{}{}{date_display}\x1B[0m",
-            self.date_left_pad,
+            "\n{}{}{text}\x1B[0m",
+            self.text_left_pad,
             self.color.foreground(),
         )
     }

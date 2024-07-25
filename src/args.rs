@@ -1,8 +1,9 @@
 use crate::{color::Color, config::Config, position::Position};
 use clap::{
     builder::styling::{AnsiColor, Effects, Styles},
-    Parser,
+    Parser, Subcommand,
 };
+use serde::Deserialize;
 
 fn styles() -> Styles {
     Styles::styled()
@@ -15,30 +16,48 @@ fn styles() -> Styles {
 #[derive(Parser)]
 #[clap(version = "v0.1.0, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
 pub struct Args {
-    #[clap(long, short, value_enum)]
-    #[clap(help = "Specify the clock color")]
-    pub color: Option<Color>,
-    #[clap(long, short, value_enum)]
-    #[clap(help = "Set the position along the horizontal axis")]
-    pub x_pos: Option<Position>,
-    #[clap(long, short, value_enum)]
-    #[clap(help = "Set the position along the vertical axis")]
-    pub y_pos: Option<Position>,
-    #[clap(long, value_enum)]
-    #[clap(help = "Set the date format")]
-    pub fmt: Option<String>,
-    #[clap(short = 't')]
-    #[clap(help = "Use the 12h format")]
-    pub use_12h: bool,
+    #[clap(subcommand)]
+    pub mode: Option<Mode>,
+    /// Specify the clock color
     #[clap(long, short)]
-    #[clap(help = "Set the polling interval in milliseconds")]
-    pub interval: Option<u64>,
+    pub color: Option<Color>,
+    /// Set the position along the horizontal axis
+    #[clap(long, short)]
+    pub x_pos: Option<Position>,
+    /// Set the position along the vertical axis
+    #[clap(long, short)]
+    pub y_pos: Option<Position>,
+    /// Set the date format
     #[clap(long)]
-    #[clap(help = "Use UTC time")]
+    pub fmt: Option<String>,
+    /// Use the 12h format
+    #[clap(short = 't')]
+    pub use_12h: bool,
+    /// Set the polling interval in milliseconds
+    #[clap(long, short)]
+    pub interval: Option<u64>,
+    /// Use UTC time
+    #[clap(long)]
     pub utc: bool,
+    /// Do not show seconds
     #[clap(long, short = 's')]
-    #[clap(help = "Do not show seconds")]
     pub hide_seconds: bool,
+}
+
+#[derive(Clone, Subcommand, Deserialize)]
+pub enum Mode {
+    /// Display the current time (default)
+    Clock,
+    /// Create a timer
+    Timer(TimerArgs),
+    /// Start a stopwatch
+    Stopwatch,
+}
+
+#[derive(clap::Args, Clone, Deserialize)]
+pub struct TimerArgs {
+    /// Specify the timer duration in seconds
+    pub secs: u64,
 }
 
 impl Args {

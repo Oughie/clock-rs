@@ -5,12 +5,15 @@ use std::{
 
 use crossterm::{
     cursor::{Hide, MoveTo, Show},
-    event::{self, Event, KeyCode, KeyEvent, KeyModifiers},
+    event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers},
     execute,
     terminal::{self, Clear, ClearType},
 };
 
-use crate::{clock::Clock, config::Config};
+use crate::{
+    clock::{clock_mode::ClockMode, Clock},
+    config::Config,
+};
 
 pub struct State {
     clock: Clock,
@@ -18,11 +21,11 @@ pub struct State {
 }
 
 impl State {
-    pub fn new(config: Config) -> io::Result<Self> {
+    pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
         let (width, height) = terminal::size()?;
 
         let interval = config.general.interval;
-        let mut clock = Clock::new(config)?;
+        let mut clock = Clock::new(config, mode)?;
         clock.update_position(width, height);
 
         Ok(Self {
@@ -46,12 +49,32 @@ impl State {
                             code: KeyCode::Esc | KeyCode::Char('q'),
                             modifiers: KeyModifiers::NONE,
                             ..
-                        } => break,
-                        KeyEvent {
+                        }
+                        | KeyEvent {
                             code: KeyCode::Char('c'),
                             modifiers: KeyModifiers::CONTROL,
                             ..
                         } => break,
+                        KeyEvent {
+                            code: KeyCode::Char('p'),
+                            kind: KeyEventKind::Press,
+                            ..
+                        } => {
+                            if let ClockMode::TimeCount(time_count) = &mut self.clock.mode {
+                                time_count.toggle_pause();
+                                let (width, height) = terminal::size()?;
+                                self.clock.update_position(width, height);
+                            }
+                        }
+                        KeyEvent {
+                            code: KeyCode::Char('r'),
+                            kind: KeyEventKind::Press,
+                            ..
+                        } => {
+                            if let ClockMode::TimeCount(time_count) = &mut self.clock.mode {
+                                time_count.restart();
+                            }
+                        }
                         _ => (),
                     },
                     Event::Resize(width, height) => {

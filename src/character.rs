@@ -6,8 +6,8 @@ pub enum Character {
 }
 
 impl Character {
-    pub const COLON: [Segment; 5] = [Empty, Center, Empty, Center, Empty];
-    pub const NUMBERS: [Segment; 50] = [
+    const COLON: [Segment; 5] = [Empty, Center, Empty, Center, Empty];
+    const NUMBERS: [Segment; 50] = [
         Full, Sides, Sides, Sides, Full, Right, Right, Right, Right, Right, Full, Right, Full,
         Left, Full, Full, Right, Full, Right, Full, Sides, Sides, Full, Right, Right, Full, Left,
         Full, Right, Full, Full, Left, Full, Sides, Full, Full, Right, Right, Right, Right, Full,
