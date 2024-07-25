@@ -2,6 +2,7 @@
 color = "white"
 interval = 500
 blink = false
+bold = false
 
 [position]
 horizontal = "center"

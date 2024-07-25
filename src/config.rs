@@ -16,6 +16,7 @@ pub struct GeneralConfig {
     pub color: Color,
     pub interval: u64,
     pub blink: bool,
+    pub bold: bool,
 }
 
 impl Default for GeneralConfig {
@@ -24,6 +25,7 @@ impl Default for GeneralConfig {
             interval: 500,
             color: Color::default(),
             blink: false,
+            bold: false,
         }
     }
 }

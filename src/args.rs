@@ -43,8 +43,11 @@ pub struct Args {
     #[clap(long, short = 's')]
     pub hide_seconds: bool,
     /// Set the colon to blink
-    #[clap(long, short)]
+    #[clap(long, short = 'B')]
     pub blink: bool,
+    /// Use bold text
+    #[clap(long, short)]
+    pub bold: bool,
 }
 
 #[derive(Clone, Subcommand, Deserialize)]
@@ -79,6 +82,9 @@ impl Args {
         }
         if self.blink {
             config.general.blink = true;
+        }
+        if self.bold {
+            config.general.bold = true;
         }
         if let Some(fmt) = self.fmt {
             config.date.fmt = fmt;

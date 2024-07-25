@@ -21,6 +21,7 @@ pub struct Clock {
     use_12h: bool,
     hide_seconds: bool,
     blink: bool,
+    bold: bool,
     left_pad: String,
     top_pad: String,
     text_left_pad: String,
@@ -33,6 +34,7 @@ impl Clock {
     const SUFFIX_LEN: usize = 5;
     const AM_SUFFIX: &'static str = " [AM]";
     const PM_SUFFIX: &'static str = " [PM]";
+    const BOLD_ESCAPE: &'static str = "\x1B[1m";
 
     pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
         Ok(Self {
@@ -44,6 +46,7 @@ impl Clock {
             use_12h: config.date.use_12h,
             hide_seconds: config.date.hide_seconds,
             blink: config.general.blink,
+            bold: config.general.bold,
             ..Default::default()
         })
     }
@@ -134,9 +137,11 @@ impl fmt::Display for Clock {
             writeln!(f, "\r")?;
         }
 
+        let bold_escape_str = if self.bold { Self::BOLD_ESCAPE } else { "" };
+
         writeln!(
             f,
-            "\n{}{}{text}\x1B[0m",
+            "\n{bold_escape_str}{}{}{text}\x1B[0m",
             self.text_left_pad,
             self.color.foreground(),
         )
