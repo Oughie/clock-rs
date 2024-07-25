@@ -23,7 +23,7 @@ A modern, digital clock that _effortlessly_ runs in your terminal.
 ## Introduction
 
 `clock-rs` is a terminal-based clock written in Rust, designed to be a new alternative to [tty-clock](https://github.com/xorg62/tty-clock). It offers several improvements, which include:
-- A single configuration file to manage its settings, with the ability to overwrite them through the command line,
+- The use of a single configuration file to manage its settings, with the ability to overwrite them through the command line,
 - Many additional features such as a timer, stopwatch, and greater flexibility,
 - And the active development that will bring many updates in the near future!
 
