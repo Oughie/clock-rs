@@ -18,11 +18,12 @@ pub struct Clock {
     y_pos: Position,
     color: Color,
     date_format: String,
+    use_12h: bool,
+    hide_seconds: bool,
+    blink: bool,
     left_pad: String,
     top_pad: String,
-    use_12h: bool,
     text_left_pad: String,
-    hide_seconds: bool,
 }
 
 impl Clock {
@@ -42,6 +43,7 @@ impl Clock {
             date_format: config.date.fmt,
             use_12h: config.date.use_12h,
             hide_seconds: config.date.hide_seconds,
+            blink: config.general.blink,
             ..Default::default()
         })
     }
@@ -105,7 +107,17 @@ impl fmt::Display for Clock {
         writeln!(f, "{}", self.top_pad)?;
 
         for row in 0..5 {
-            let colon = CharacterDisplay::new(Character::Colon, color, row);
+            let colon_character = if self.blink {
+                if second & 1 == 0 {
+                    Character::Colon
+                } else {
+                    Character::Empty
+                }
+            } else {
+                Character::Colon
+            };
+
+            let colon = CharacterDisplay::new(colon_character, color, row);
             let h0 = CharacterDisplay::new(Character::Num(hour / 10), color, row);
             let h1 = CharacterDisplay::new(Character::Num(hour % 10), color, row);
             let m0 = CharacterDisplay::new(Character::Num(minute / 10), color, row);

@@ -1,6 +1,7 @@
 [general]
 color = "white"
 interval = 500
+blink = false
 
 [position]
 horizontal = "center"

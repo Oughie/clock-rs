@@ -42,6 +42,9 @@ pub struct Args {
     /// Do not show seconds
     #[clap(long, short = 's')]
     pub hide_seconds: bool,
+    /// Set the colon to blink
+    #[clap(long, short)]
+    pub blink: bool,
 }
 
 #[derive(Clone, Subcommand, Deserialize)]
@@ -73,6 +76,9 @@ impl Args {
         }
         if let Some(y_pos) = self.y_pos {
             config.position.y = y_pos;
+        }
+        if self.blink {
+            config.general.blink = true;
         }
         if let Some(fmt) = self.fmt {
             config.date.fmt = fmt;

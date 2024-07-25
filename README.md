@@ -79,6 +79,7 @@ Options:
   -i, --interval <INTERVAL>  Set the polling interval in milliseconds
       --utc                  Use UTC time
   -s, --hide-seconds         Do not show seconds
+  -b, --blink                Set the colon to blink
   -h, --help                 Print help
   -V, --version              Print version
 ```
@@ -106,6 +107,7 @@ Here's a list of the available fields inside the `conf.toml` file.
 | ------------------------- | -------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------| ------------ |
 | `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`, `"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
 | `general.interval`        | Set the polling interval in milliseconds   | Any Unsigned Integer, e.g. `499`.                                                                                                 | `500`        |
+| `general.blink`           | Set the colon to blink                     | `true` or `false`.                                                                                                                | `false`      |
 | `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
 | `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
 | `date.fmt`                | Specify the date format                    | Any String, e.g. `%A, %B %d, %Y`.                                                                                                 | `"%d-%m-%Y"` |
@@ -121,6 +123,7 @@ The `conf.toml` file could look like this:
 [general]
 color = "magenta"
 interval = 499
+blink = true
 
 [position]
 horizontal = "start"

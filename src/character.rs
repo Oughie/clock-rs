@@ -3,6 +3,7 @@ use crate::segment::Segment::{self, *};
 pub enum Character {
     Num(u32),
     Colon,
+    Empty,
 }
 
 impl Character {
@@ -18,6 +19,7 @@ impl Character {
         match self {
             Self::Num(n) => &Self::NUMBERS[*n as usize * 5 + row],
             Self::Colon => &Self::COLON[row],
+            Self::Empty => &Empty,
         }
     }
 }
