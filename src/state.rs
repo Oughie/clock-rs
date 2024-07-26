@@ -60,8 +60,8 @@ impl State {
                             kind: KeyEventKind::Press,
                             ..
                         } => {
-                            if let ClockMode::TimeCount(time_count) = &mut self.clock.mode {
-                                time_count.toggle_pause();
+                            if let ClockMode::Counter(counter) = &mut self.clock.mode {
+                                counter.toggle_pause();
                                 let (width, height) = terminal::size()?;
                                 self.clock.update_position(width, height);
                             }
@@ -71,8 +71,8 @@ impl State {
                             kind: KeyEventKind::Press,
                             ..
                         } => {
-                            if let ClockMode::TimeCount(time_count) = &mut self.clock.mode {
-                                time_count.restart();
+                            if let ClockMode::Counter(counter) = &mut self.clock.mode {
+                                counter.restart();
                             }
                         }
                         _ => (),

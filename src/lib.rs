@@ -12,7 +12,7 @@ use std::{env::VarError, fs, time::Duration};
 
 use args::Mode;
 use clap::Parser;
-use clock::{clock_mode::ClockMode, time::Time, time_count::TimeCount};
+use clock::{clock_mode::ClockMode, counter::Counter, time::Time};
 
 use crate::{args::Args, config::Config, state::State};
 
@@ -53,9 +53,9 @@ pub fn run() -> Result<(), String> {
                             .into(),
                     );
                 }
-                ClockMode::TimeCount(TimeCount::new(Some(Duration::from_secs(args.secs))))
+                ClockMode::Counter(Counter::new(Some(Duration::from_secs(args.secs))))
             }
-            Mode::Stopwatch => ClockMode::TimeCount(TimeCount::new(None)),
+            Mode::Stopwatch => ClockMode::Counter(Counter::new(None)),
         }
     } else {
         ClockMode::CurrentTime(match config.date.utc {

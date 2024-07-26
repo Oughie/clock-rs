@@ -1,8 +1,8 @@
-use super::{time::Time, time_count::TimeCount};
+use super::{counter::Counter, time::Time};
 
 pub enum ClockMode {
     CurrentTime(Time),
-    TimeCount(TimeCount),
+    Counter(Counter),
 }
 
 impl ClockMode {
@@ -13,14 +13,14 @@ impl ClockMode {
     pub fn get_time(&self, date_format: &str) -> (u32, u32, u32, String) {
         match self {
             Self::CurrentTime(time) => time.get_time(date_format),
-            Self::TimeCount(time_count) => time_count.get_time(),
+            Self::Counter(counter) => counter.get_time(),
         }
     }
 
     pub fn text(&self, date_format: &str) -> String {
         match self {
             Self::CurrentTime(time) => time.text(date_format),
-            Self::TimeCount(time_count) => time_count.text().into(),
+            Self::Counter(counter) => counter.text().into(),
         }
     }
 }

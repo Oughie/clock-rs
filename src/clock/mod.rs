@@ -1,6 +1,6 @@
 pub mod clock_mode;
+pub mod counter;
 pub mod time;
-pub mod time_count;
 
 use std::{fmt, io};
 

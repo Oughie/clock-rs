@@ -1,13 +1,13 @@
 use std::time::{Duration, Instant};
 
-pub struct TimeCount {
+pub struct Counter {
     start: Instant,
     last_pause: Option<Instant>,
     duration: Option<Duration>,
     paused: bool,
 }
 
-impl TimeCount {
+impl Counter {
     pub fn new(duration: Option<Duration>) -> Self {
         Self {
             start: Instant::now(),
