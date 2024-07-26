@@ -73,6 +73,8 @@ impl State {
                         } => {
                             if let ClockMode::Counter(counter) = &mut self.clock.mode {
                                 counter.restart();
+                                let (width, height) = terminal::size()?;
+                                self.clock.update_position(width, height);
                             }
                         }
                         _ => (),
