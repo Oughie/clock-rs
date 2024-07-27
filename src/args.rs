@@ -1,4 +1,5 @@
 use crate::{color::Color, config::Config, position::Position};
+
 use clap::{
     builder::styling::{AnsiColor, Effects, Styles},
     Parser, Subcommand,
@@ -7,10 +8,10 @@ use serde::Deserialize;
 
 fn styles() -> Styles {
     Styles::styled()
-        .header(AnsiColor::Green.on_default() | Effects::BOLD)
-        .usage(AnsiColor::Green.on_default() | Effects::BOLD)
+        .header(AnsiColor::Green.on_default() | Effects::BOLD | Effects::UNDERLINE)
+        .usage(AnsiColor::Green.on_default() | Effects::BOLD | Effects::UNDERLINE)
         .literal(AnsiColor::Blue.on_default() | Effects::BOLD)
-        .placeholder(AnsiColor::BrightYellow.on_default())
+        .placeholder(AnsiColor::Yellow.on_default() | Effects::ITALIC)
 }
 
 #[derive(Parser)]
