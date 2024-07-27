@@ -1,4 +1,4 @@
-use std::{env::VarError, fs};
+use std::{env::VarError, fs, path::Path};
 
 use serde::Deserialize;
 
@@ -71,7 +71,10 @@ impl Config {
             )),
             Err(VarError::NotPresent) => match dirs::config_local_dir() {
                 Some(dir) => match dir.join("clock-rs/conf.toml").to_str() {
-                    Some(path) => Ok(Some(path.to_string())),
+                    Some(path) => match Path::new(path).exists() {
+                        true => Ok(Some(path.to_string())),
+                        false => Ok(None),
+                    },
                     None => Err("configuration path is not valid unicode".into()),
                 },
                 None => Ok(None),
