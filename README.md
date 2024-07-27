@@ -2,6 +2,7 @@
 
 A modern, digital clock that _effortlessly_ runs in your terminal.
 
+[![crates.io](https://img.shields.io/crates/v/clock-rs.svg)](https://crates.io/crates/clock-rs)
 [![License](https://img.shields.io/github/license/Oughie/clock-rs)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/Oughie/clock-rs)](https://github.com/Oughie/clock-rs/stargazers)
 
@@ -11,8 +12,6 @@ A modern, digital clock that _effortlessly_ runs in your terminal.
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-  - [Dependencies](#dependencies)
-  - [Steps](#steps)
 - [Usage](#usage)
 - [Configuration](#configuration)
   - [Fields](#fields)
@@ -29,34 +28,7 @@ A modern, digital clock that _effortlessly_ runs in your terminal.
 
 ## Installation
 
-### Dependencies
-
-To install `clock-rs` from source, ensure you have [Rust](https://www.rust-lang.org/) along with Cargo installed.
-
-### Steps
-
-1. Clone the repository
-
-    `$ git clone https://github.com/Oughie/clock-rs`
-
-2. Navigate into the new directory
-
-    `$ cd clock-rs`
-
-3. Build the project using Cargo
-
-    `$ cargo build --release`
-
-After the build is complete, you can find the executable in the `target/release/` directory.  
-Optionally, you can make the file globally executable.
-
-On Linux, run the following commands:
-
-```sh
-$ sudo cp target/release/clock-rs /usr/local/bin/
-$ chmod +x target/release/clock-rs
-```
-
+To install `clock-rs` globally using Cargo, simply run `$ cargo install clock-rs`.
 You can then run the executable via the `clock-rs` command.
 
 ## Usage
