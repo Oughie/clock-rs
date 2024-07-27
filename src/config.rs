@@ -1,3 +1,5 @@
+use std::{env::VarError, fs};
+
 use serde::Deserialize;
 
 use crate::{color::Color, position::Position};
@@ -55,6 +57,30 @@ impl Default for DateConfig {
             use_12h: false,
             utc: false,
             hide_seconds: false,
+        }
+    }
+}
+
+impl Config {
+    pub fn parse() -> Result<Self, String> {
+        if let Some(file_path) = match std::env::var("CONF_PATH") {
+            Ok(path) => Ok(Some(path)),
+            Err(VarError::NotUnicode(s)) => Err(format!(
+                "environment variable is not valid unicode: {:?}",
+                s
+            )),
+            Err(VarError::NotPresent) => match dirs::config_local_dir() {
+                Some(dir) => match dir.join("clock-rs/conf.toml").to_str() {
+                    Some(path) => Ok(Some(path.to_string())),
+                    None => Err("configuration path is not valid unicode".into()),
+                },
+                None => Ok(None),
+            },
+        }? {
+            let config_str = fs::read_to_string(file_path).map_err(|err| err.to_string())?;
+            toml::from_str(&config_str).map_err(|err| err.to_string())
+        } else {
+            Ok(Config::default())
         }
     }
 }

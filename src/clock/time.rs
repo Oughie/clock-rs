@@ -6,6 +6,13 @@ pub enum Time {
 }
 
 impl Time {
+    pub fn from_utc(utc: bool) -> Self {
+        match utc {
+            true => Self::Utc,
+            false => Self::Local,
+        }
+    }
+
     pub fn get_time(&self, date_format: &str) -> (u32, u32, u32, String) {
         match self {
             Self::Utc => {
