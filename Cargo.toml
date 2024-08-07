@@ -4,12 +4,12 @@ authors = ["Oughie <oughery@gmail.com>"]
 description = "A modern, terminal-based digital clock"
 keywords = ["clock", "terminal", "time", "cli", "date"]
 categories = ["date-and-time", "command-line-interface"]
-exclude = ["pubic/*"]
+exclude = ["public/*"]
 repository = "https://github.com/Oughie/clock-rs"
 homepage = "https://github.com/Oughie/clock-rs"
 readme = "README.md"
 license = "Apache-2.0"
-version = "0.1.2"
+version = "0.1.201"
 edition = "2021"
 
 [dependencies]
@@ -25,4 +25,3 @@ strip = true
 opt-level = 3
 lto = true
 codegen-units = 1
-
