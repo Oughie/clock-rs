@@ -9,16 +9,16 @@ repository = "https://github.com/Oughie/clock-rs"
 homepage = "https://github.com/Oughie/clock-rs"
 readme = "README.md"
 license = "Apache-2.0"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 
 [dependencies]
 chrono = "0.4.38"
-clap = { version = "4.5.9", features = ["derive"] }
-crossterm = "0.27.0"
+clap = { version = "4.5.13", features = ["derive"] }
+crossterm = "0.28.1"
 dirs = "5.0.1"
 serde = { version = "1.0.204", features = ["derive"] }
-toml = "0.8.15"
+toml = "0.8.19"
 
 [profile.release]
 strip = true

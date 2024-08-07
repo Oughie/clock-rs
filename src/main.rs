@@ -8,10 +8,9 @@ mod position;
 mod segment;
 mod state;
 
-use std::{io, process, time::Duration};
+use std::{process, time::Duration};
 
 use clap::Parser;
-use crossterm::{cursor::Show, execute, terminal};
 
 use crate::{
     args::{Args, Mode},
@@ -22,12 +21,7 @@ use crate::{
 
 fn main() {
     if let Err(err) = run() {
-        let mut stdout = io::stdout();
-
-        execute!(stdout, Show).unwrap();
-        terminal::disable_raw_mode().unwrap();
-
-        eprintln!("An error occured while running clock-rs:\n{err}");
+        eprintln!("Error:\n{err}");
         process::exit(1);
     }
 }

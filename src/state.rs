@@ -7,7 +7,7 @@ use crossterm::{
     cursor::{Hide, MoveTo, Show},
     event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers},
     execute,
-    terminal::{self, Clear, ClearType},
+    terminal::{self, Clear, ClearType, EnterAlternateScreen, LeaveAlternateScreen},
 };
 
 use crate::{
@@ -38,7 +38,7 @@ impl State {
         let mut stdout = io::stdout();
 
         terminal::enable_raw_mode()?;
-        execute!(stdout, Clear(ClearType::All), Hide)?;
+        execute!(stdout, EnterAlternateScreen, Hide)?;
 
         loop {
             self.render()?;
@@ -54,7 +54,7 @@ impl State {
                             code: KeyCode::Char('c'),
                             modifiers: KeyModifiers::CONTROL,
                             ..
-                        } => break,
+                        } => break Ok(()),
                         KeyEvent {
                             code: KeyCode::Char('p'),
                             kind: KeyEventKind::Press,
@@ -86,8 +86,6 @@ impl State {
                 }
             }
         }
-
-        self.close()
     }
 
     pub fn render(&self) -> io::Result<()> {
@@ -107,11 +105,15 @@ impl State {
 
         w.flush()
     }
+}
 
-    fn close(self) -> io::Result<()> {
+impl Drop for State {
+    fn drop(&mut self) {
         let mut stdout = io::stdout();
 
-        execute!(stdout, MoveTo(0, 0), Clear(ClearType::All), Show)?;
+        execute!(stdout, LeaveAlternateScreen, Show)
+            .expect("Error: Could not leave alternate screen.");
         terminal::disable_raw_mode()
+            .expect("Error: Could not disable raw mode. You might have to restart your terminal.");
     }
 }
