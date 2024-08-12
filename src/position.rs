@@ -15,7 +15,7 @@ impl Position {
         match self {
             Self::Start => 1,
             Self::Center => (len / 2).saturating_sub(offset),
-            Self::End => len.saturating_sub(offset * 2),
+            Self::End => len.saturating_sub(offset * 2 + 1),
         }
     }
 }
