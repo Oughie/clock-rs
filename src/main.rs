@@ -21,7 +21,7 @@ use crate::{
 
 fn main() {
     if let Err(err) = run() {
-        eprintln!("Error:\n{err}");
+        eprintln!("Error while running clock-rs:\n{err}");
         process::exit(1);
     }
 }
