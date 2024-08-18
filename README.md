@@ -57,25 +57,26 @@ Options:
   -V, --version              Print version
 ```
 
+To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
+
 > [!NOTE]
 > If no command is specified, the `clock` command is used by default.  
 > Therefore, running `$ clock-rs clock` or simply `$ clock-rs` will both display the current time.
 
-To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
-
 ## Configuration
 
-`clock-rs` uses the [TOML](https://toml.io/en/) file format for its settings.  
+`clock-rs` uses the [TOML](https://toml.io/en/) file format for its settings.
 By default, the configuration file is named `conf.toml` and is stored in the OS configuration directory, within the `clock-rs` subdirectory.
 
-| Platform | Configuration path                                     | Support                                                                     |
-| -------- | ------------------------------------------------------ | --------------------------------------------------------------------------- |
-| Linux:   | `~/.config/clock-rs/conf.toml`                         | ✅ Confirmed                                                                |
-| MacOS:   | `~/Library/Application Support/clock-rs/conf.toml`     | ❎ Unconfirmed                                                              |
-| Windows: | `C:\Users\%USERNAME%\AppData\Local\clock-rs\conf.toml` | 🚧 Partially working, see [#2](https://github.com/Oughie/clock-rs/issues/2) |
+| Platform | Configuration file path                                | Support                                                                  |
+| -------- | ------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Linux    | `~/.config/clock-rs/conf.toml`                         | ✅ Confirmed                                                             |
+| MacOS    | `~/Library/Application Support/clock-rs/conf.toml`     | ❎ Unconfirmed                                                           |
+| Windows  | `C:\Users\%USERNAME%\AppData\Local\clock-rs\conf.toml` | 🚧 Partially working ([#2](https://github.com/Oughie/clock-rs/issues/2)) |
 
 You can change this path by setting the `CONF_PATH` environment variable.  
 If you wish to run the application without automatically using the existing `conf.toml` file, you can set `CONF_PATH` to `None`.  
+
 Any argument passed in the command line will overwrite the settings inside the `conf.toml` file.
 
 ### Fields
@@ -85,12 +86,12 @@ Here's a list of the available fields inside the `conf.toml` file.
 | Field                     | Description                                | Possible values                                                                                                                   | Default      |
 | ------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------ |
 | `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`, `"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
-| `general.interval`        | Set the polling interval in milliseconds   | Any Unsigned Integer, e.g. `499`.                                                                                                 | `500`        |
+| `general.interval`        | Set the polling interval in milliseconds   | An unsigned integer, e.g. `250`.                                                                                                 | `500`        |
 | `general.blink`           | Set the colon to blink                     | `true` or `false`.                                                                                                                | `false`      |
 | `general.bold`            | Use bold text                              | `true` or `false`.                                                                                                                | `false`      |
 | `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
 | `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
-| `date.fmt`                | Specify the date format                    | Any String, e.g. `%A, %B %d, %Y`.                                                                                                 | `"%d-%m-%Y"` |
+| `date.fmt`                | Specify the date format                    | A string, e.g. `%A, %B %d, %Y`.                                                                                                 | `"%d-%m-%Y"` |
 | `date.use_12h`            | Use the 12h format                         | `true` or `false`.                                                                                                                | `false`      |
 | `date.utc`                | Use UTC time                               | `true` or `false`.                                                                                                                | `false`      |
 | `date.hide_seconds`       | Do not show seconds                        | `true` or `false`.                                                                                                                | `false`      |
@@ -102,7 +103,7 @@ The `conf.toml` file could look like this:
 ```toml
 [general]
 color = "magenta"
-interval = 499
+interval = 250
 blink = true
 bold = true
 
