@@ -1,4 +1,8 @@
-use std::{env::VarError, fs, path::Path};
+use std::{
+    env::{self, VarError},
+    fs,
+    path::Path,
+};
 
 use serde::Deserialize;
 
@@ -63,8 +67,11 @@ impl Default for DateConfig {
 
 impl Config {
     pub fn parse() -> Result<Self, String> {
-        if let Some(file_path) = match std::env::var("CONF_PATH") {
-            Ok(path) => Ok(Some(path)),
+        if let Some(file_path) = match env::var("CONF_PATH") {
+            Ok(path) => match path.as_str() {
+                "None" => Ok(None),
+                _ => Ok(Some(path)),
+            },
             Err(VarError::NotUnicode(s)) => Err(format!(
                 "environment variable is not valid unicode: {:?}",
                 s

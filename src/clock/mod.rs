@@ -34,7 +34,6 @@ impl Clock {
     const SUFFIX_LEN: usize = 5;
     const AM_SUFFIX: &'static str = " [AM]";
     const PM_SUFFIX: &'static str = " [PM]";
-    const BOLD_ESCAPE: &'static str = "\x1B[1m";
 
     pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
         Ok(Self {
@@ -62,8 +61,8 @@ impl Clock {
             Self::WIDTH / 2
         };
 
-        let x = self.x_pos.calc(width.into(), half_width);
-        let y = self.y_pos.calc(height.into(), Self::HEIGHT / 2);
+        let x = self.x_pos.calculate(width.into(), half_width);
+        let y = self.y_pos.calculate(height.into(), Self::HEIGHT / 2);
 
         self.left_pad = " ".repeat(x);
         self.top_pad = "\n".repeat(y);
@@ -78,10 +77,7 @@ impl Clock {
         } else if Self::WIDTH + 2 > width {
             return true;
         }
-        if Self::HEIGHT + 2 > height {
-            return true;
-        }
-        false
+        Self::HEIGHT + 2 > height
     }
 }
 
@@ -137,7 +133,7 @@ impl fmt::Display for Clock {
             writeln!(f, "\r")?;
         }
 
-        let bold_escape_str = if self.bold { Self::BOLD_ESCAPE } else { "" };
+        let bold_escape_str = if self.bold { "\x1B[1m" } else { "" };
 
         writeln!(
             f,

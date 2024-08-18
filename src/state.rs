@@ -42,6 +42,7 @@ impl State {
 
         loop {
             self.render()?;
+
             if event::poll(self.interval)? {
                 match event::read()? {
                     Event::Key(key_event) => match key_event {

@@ -75,6 +75,7 @@ By default, the configuration file is named `conf.toml` and is stored in the OS 
 | Windows: | `C:\Users\%USERNAME%\AppData\Local\clock-rs\conf.toml` | 🚧 Partially working, see [#2](https://github.com/Oughie/clock-rs/issues/2) |
 
 You can change this path by setting the `CONF_PATH` environment variable.  
+If you wish to run the application without automatically using the existing `conf.toml` file, you can set `CONF_PATH` to `None`.  
 Any argument passed in the command line will overwrite the settings inside the `conf.toml` file.
 
 ### Fields

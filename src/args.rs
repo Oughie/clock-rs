@@ -15,55 +15,55 @@ fn styles() -> Styles {
 }
 
 #[derive(Parser)]
-#[clap(version = "v0.1.202, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
+#[clap(version = "v0.1.203, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
 pub struct Args {
     #[clap(subcommand)]
     pub mode: Option<Mode>,
-    /// Specify the clock color
+    #[doc = "Specify the clock color"]
     #[clap(long, short)]
     pub color: Option<Color>,
-    /// Set the position along the horizontal axis
+    #[doc = "Set the position along the horizontal axis"]
     #[clap(long, short)]
     pub x_pos: Option<Position>,
-    /// Set the position along the vertical axis
+    #[doc = "Set the position along the vertical axis"]
     #[clap(long, short)]
     pub y_pos: Option<Position>,
-    /// Set the date format
+    #[doc = "Set the date format"]
     #[clap(long)]
     pub fmt: Option<String>,
-    /// Use the 12h format
+    #[doc = "Use the 12h format"]
     #[clap(short = 't')]
     pub use_12h: bool,
-    /// Set the polling interval in milliseconds
+    #[doc = "Set the polling interval in milliseconds"]
     #[clap(long, short)]
     pub interval: Option<u64>,
-    /// Use UTC time
+    #[doc = "Use UTC time"]
     #[clap(long)]
     pub utc: bool,
-    /// Do not show seconds
+    #[doc = "Do not show seconds"]
     #[clap(long, short = 's')]
     pub hide_seconds: bool,
-    /// Set the colon to blink
+    #[doc = "Set the colon to blink"]
     #[clap(long, short = 'B')]
     pub blink: bool,
-    /// Use bold text
+    #[doc = "Use bold text"]
     #[clap(long, short)]
     pub bold: bool,
 }
 
 #[derive(Clone, Subcommand, Deserialize)]
 pub enum Mode {
-    /// Display the current time (default)
+    #[doc = "Display the current time (default)"]
     Clock,
-    /// Create a timer
+    #[doc = "Create a timer"]
     Timer(TimerArgs),
-    /// Start a stopwatch
+    #[doc = "Start a stopwatch"]
     Stopwatch,
 }
 
 #[derive(clap::Args, Clone, Deserialize)]
 pub struct TimerArgs {
-    /// Specify the timer duration in seconds
+    #[doc = "Specify the timer duration in seconds"]
     pub secs: u64,
 }
 
