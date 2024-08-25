@@ -6,7 +6,7 @@ pub enum Time {
 }
 
 impl Time {
-    pub fn from_utc(utc: bool) -> Self {
+    pub fn new(utc: bool) -> Self {
         match utc {
             true => Self::Utc,
             false => Self::Local,

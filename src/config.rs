@@ -6,7 +6,7 @@ use std::{
 
 use serde::Deserialize;
 
-use crate::{color::Color, position::Position};
+use crate::{color::Color, error::Error, position::Position};
 
 #[derive(Default, Deserialize)]
 #[serde(default)]
@@ -66,29 +66,30 @@ impl Default for DateConfig {
 }
 
 impl Config {
-    pub fn parse() -> Result<Self, String> {
+    pub fn parse() -> Result<Self, Error> {
         if let Some(file_path) = match env::var("CONF_PATH") {
             Ok(path) => match path.as_str() {
                 "None" => Ok(None),
                 _ => Ok(Some(path)),
             },
-            Err(VarError::NotUnicode(s)) => Err(format!(
-                "environment variable is not valid unicode: {:?}",
-                s
-            )),
+            Err(VarError::NotUnicode(s)) => {
+                Err(Error::PathIsNonUnicode(s.to_string_lossy().to_string()))
+            }
             Err(VarError::NotPresent) => match dirs::config_local_dir() {
                 Some(dir) => match dir.join("clock-rs/conf.toml").to_str() {
                     Some(path) => match Path::new(path).exists() {
                         true => Ok(Some(path.to_string())),
                         false => Ok(None),
                     },
-                    None => Err("configuration path is not valid unicode".into()),
+                    None => Err(Error::PathIsNonUnicode(dir.to_string_lossy().to_string())),
                 },
                 None => Ok(None),
             },
         }? {
-            let config_str = fs::read_to_string(file_path).map_err(|err| err.to_string())?;
-            toml::from_str(&config_str).map_err(|err| err.to_string())
+            let config_str = fs::read_to_string(&file_path)
+                .map_err(|err| Error::FailedToReadFile(file_path.clone(), err.to_string()))?;
+            toml::from_str(&config_str)
+                .map_err(|err| Error::InvalidToml(file_path, err.to_string()))
         } else {
             Ok(Config::default())
         }

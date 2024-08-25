@@ -22,9 +22,9 @@ pub struct State {
 
 impl State {
     pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
-        let (width, height) = terminal::size()?;
-
         let interval = config.general.interval;
+
+        let (width, height) = terminal::size()?;
         let mut clock = Clock::new(config, mode)?;
         clock.update_position(width, height);
 
@@ -66,6 +66,7 @@ impl State {
                                 let (width, height) = terminal::size()?;
                                 self.clock.update_position(width, height);
                             }
+                            execute!(stdout, Clear(ClearType::All))?;
                         }
                         KeyEvent {
                             code: KeyCode::Char('r'),
@@ -77,6 +78,7 @@ impl State {
                                 let (width, height) = terminal::size()?;
                                 self.clock.update_position(width, height);
                             }
+                            execute!(stdout, Clear(ClearType::All))?;
                         }
                         _ => (),
                     },

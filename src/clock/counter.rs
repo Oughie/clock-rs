@@ -8,6 +8,9 @@ pub struct Counter {
 }
 
 impl Counter {
+    pub const MAX_TIMER_HOURS: u64 = 24;
+    pub const MAX_TIMER_DURATION: u64 = Self::MAX_TIMER_HOURS * 3600;
+
     pub fn new(duration: Option<Duration>) -> Self {
         Self {
             start: Instant::now(),
@@ -37,7 +40,7 @@ impl Counter {
     }
 
     pub fn get_time(&self) -> (u32, u32, u32, String) {
-        let elapsed = if self.paused {
+        let mut elapsed = if self.paused {
             if let Some(last_pause) = self.last_pause {
                 last_pause.duration_since(self.start)
             } else {
@@ -47,11 +50,9 @@ impl Counter {
             self.start.elapsed()
         };
 
-        let elapsed = if let Some(duration) = self.duration {
-            duration.saturating_sub(elapsed.saturating_sub(Duration::from_secs(1)))
-        } else {
-            elapsed
-        };
+        if let Some(duration) = self.duration {
+            elapsed = duration.saturating_sub(elapsed.saturating_sub(Duration::from_secs(1)))
+        }
 
         let secs = elapsed.as_secs() as u32;
         let hours = secs / 3600;

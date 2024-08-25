@@ -27,7 +27,6 @@ impl Character {
     }
 
     pub fn fmt(&self, color: &Color, row: usize) -> String {
-        let segment = self.segment(row);
-        segment.fmt(color)
+        self.segment(row).fmt(color)
     }
 }
