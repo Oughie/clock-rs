@@ -3,7 +3,7 @@
 
 [general]
 color = "white"
-interval = 500
+interval = 200
 blink = false
 bold = false
 

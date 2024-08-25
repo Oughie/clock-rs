@@ -28,7 +28,7 @@ pub struct GeneralConfig {
 impl Default for GeneralConfig {
     fn default() -> Self {
         Self {
-            interval: 500,
+            interval: 200,
             color: Color::default(),
             blink: false,
             bold: false,
