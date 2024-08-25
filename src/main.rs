@@ -1,6 +1,5 @@
-mod args;
 mod character;
-mod character_display;
+mod cli;
 mod clock;
 mod color;
 mod config;
@@ -13,7 +12,7 @@ use std::{process, time::Duration};
 use clap::Parser;
 
 use crate::{
-    args::{Args, Mode},
+    cli::{Args, Mode},
     clock::{clock_mode::ClockMode, counter::Counter, time::Time},
     config::Config,
     state::State,

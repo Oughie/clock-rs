@@ -4,10 +4,7 @@ pub mod time;
 
 use std::{fmt, io};
 
-use crate::{
-    character::Character, character_display::CharacterDisplay, color::Color, config::Config,
-    position::Position,
-};
+use crate::{character::Character, color::Color, config::Config, position::Position};
 
 use clock_mode::ClockMode;
 
@@ -101,7 +98,7 @@ impl fmt::Display for Clock {
             }
         }
 
-        let color = self.color;
+        let color = &self.color;
 
         writeln!(f, "{}", self.top_pad)?;
 
@@ -116,17 +113,17 @@ impl fmt::Display for Clock {
                 Character::Colon
             };
 
-            let colon = CharacterDisplay::new(colon_character, color, row);
-            let h0 = CharacterDisplay::new(Character::Num(hour / 10), color, row);
-            let h1 = CharacterDisplay::new(Character::Num(hour % 10), color, row);
-            let m0 = CharacterDisplay::new(Character::Num(minute / 10), color, row);
-            let m1 = CharacterDisplay::new(Character::Num(minute % 10), color, row);
+            let colon = colon_character.fmt(color, row);
+            let h0 = Character::Num(hour / 10).fmt(color, row);
+            let h1 = Character::Num(hour % 10).fmt(color, row);
+            let m0 = Character::Num(minute / 10).fmt(color, row);
+            let m1 = Character::Num(minute % 10).fmt(color, row);
 
             write!(f, "{}{h0}{h1}{colon}{m0}{m1}", self.left_pad)?;
 
             if !self.hide_seconds {
-                let s0 = CharacterDisplay::new(Character::Num(second / 10), color, row);
-                let s1 = CharacterDisplay::new(Character::Num(second % 10), color, row);
+                let s0 = Character::Num(second / 10).fmt(color, row);
+                let s1 = Character::Num(second % 10).fmt(color, row);
                 write!(f, "{colon}{s0}{s1}")?;
             }
 

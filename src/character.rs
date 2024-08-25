@@ -1,4 +1,7 @@
-use crate::segment::Segment::{self, *};
+use crate::{
+    color::Color,
+    segment::Segment::{self, *},
+};
 
 pub enum Character {
     Num(u32),
@@ -15,11 +18,16 @@ impl Character {
         Sides, Full, Sides, Full, Full, Sides, Full, Right, Full,
     ];
 
-    pub fn segment(&self, row: usize) -> &Segment {
+    fn segment(&self, row: usize) -> &Segment {
         match self {
             Self::Num(n) => &Self::NUMBERS[*n as usize * 5 + row],
             Self::Colon => &Self::COLON[row],
             Self::Empty => &Empty,
         }
+    }
+
+    pub fn fmt(&self, color: &Color, row: usize) -> String {
+        let segment = self.segment(row);
+        segment.fmt(color)
     }
 }

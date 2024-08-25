@@ -82,6 +82,7 @@ impl State {
                     },
                     Event::Resize(width, height) => {
                         self.clock.update_position(width, height);
+                        execute!(stdout, Clear(ClearType::All))?;
                     }
                     _ => (),
                 }
@@ -91,10 +92,10 @@ impl State {
 
     pub fn render(&self) -> io::Result<()> {
         let mut stdout = io::stdout();
-
-        execute!(stdout, MoveTo(0, 0), Clear(ClearType::All))?;
-
         let (width, height) = terminal::size()?;
+
+        execute!(stdout, MoveTo(0, 0))?;
+
         if self.clock.is_too_large(width.into(), height.into()) {
             return Ok(());
         }

@@ -10,9 +10,9 @@ pub enum Segment {
 }
 
 impl Segment {
-    pub fn fmt(&self, color: Color) -> String {
+    pub fn fmt(&self, color: &Color) -> String {
         let color = color.background();
-        let reset = "\x1B[0m";
+        let reset = Color::RESET;
 
         match self {
             Self::Full => format!("{color}      {reset} "),

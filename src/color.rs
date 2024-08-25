@@ -2,7 +2,7 @@ use clap::ValueEnum;
 use serde::Deserialize;
 
 #[repr(u8)]
-#[derive(Clone, Copy, Default, Deserialize, ValueEnum)]
+#[derive(Clone, Default, Deserialize, ValueEnum)]
 #[serde(rename_all = "lowercase")]
 pub enum Color {
     Black,
@@ -25,6 +25,8 @@ pub enum Color {
 }
 
 impl Color {
+    pub const RESET: &'static str = "\x1B[0m";
+
     pub const fn foreground(&self) -> &'static str {
         match self {
             Self::Black => "\x1B[30m",
