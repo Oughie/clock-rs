@@ -39,7 +39,7 @@ impl Counter {
         self.paused = false;
     }
 
-    pub fn get_time(&self) -> (u32, u32, u32, String) {
+    pub fn get_time(&self) -> (u32, u32, u32) {
         let mut elapsed = if self.paused {
             if let Some(last_pause) = self.last_pause {
                 last_pause.duration_since(self.start)
@@ -59,7 +59,7 @@ impl Counter {
         let minutes = (secs % 3600) / 60;
         let seconds = secs % 60;
 
-        (hours, minutes, seconds, self.text().into())
+        (hours, minutes, seconds)
     }
 
     pub const fn text(&self) -> &str {

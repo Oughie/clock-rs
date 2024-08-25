@@ -1,7 +1,6 @@
 use clap::ValueEnum;
 use serde::Deserialize;
 
-#[repr(u8)]
 #[derive(Clone, Default, Deserialize, ValueEnum)]
 #[serde(rename_all = "lowercase")]
 pub enum Color {

@@ -1,20 +1,18 @@
-pub mod clock_mode;
 pub mod counter;
-pub mod time;
+pub mod mode;
+pub mod time_zone;
 
 use std::{fmt, io};
 
 use crate::{character::Character, color::Color, config::Config, position::Position};
 
-use clock_mode::ClockMode;
+use mode::ClockMode;
 
-#[derive(Default)]
 pub struct Clock {
     pub mode: ClockMode,
     x_pos: Position,
     y_pos: Position,
     color: Color,
-    date_format: String,
     use_12h: bool,
     hide_seconds: bool,
     blink: bool,
@@ -38,17 +36,18 @@ impl Clock {
             x_pos: config.position.x,
             y_pos: config.position.y,
             color: config.general.color,
-            date_format: config.date.fmt,
             use_12h: config.date.use_12h,
             hide_seconds: config.date.hide_seconds,
             blink: config.general.blink,
             bold: config.general.bold,
-            ..Default::default()
+            left_pad: String::new(),
+            top_pad: String::new(),
+            text_left_pad: String::new(),
         })
     }
 
     pub fn update_position(&mut self, width: u16, height: u16) {
-        let text = self.mode.text(&self.date_format);
+        let text = self.mode.text();
 
         let text_len = text.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
 
@@ -80,22 +79,26 @@ impl Clock {
 
 impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let (mut hour, minute, second, mut text) = self.mode.get_time(&self.date_format);
+        let mut text = self.mode.text();
+        let (mut hour, minute, second) = self.mode.get_time();
 
-        if self.use_12h && self.mode.is_time() {
-            let suffix = if hour < 12 {
-                Self::AM_SUFFIX
-            } else {
-                Self::PM_SUFFIX
-            };
+        match self.mode {
+            ClockMode::Time { .. } if self.use_12h => {
+                let suffix = if hour < 12 {
+                    Self::AM_SUFFIX
+                } else {
+                    Self::PM_SUFFIX
+                };
 
-            text.push_str(suffix);
+                text.push_str(suffix);
 
-            if hour > 12 {
-                hour -= 12;
-            } else if hour == 0 {
-                hour = 12;
+                if hour > 12 {
+                    hour -= 12;
+                } else if hour == 0 {
+                    hour = 12;
+                }
             }
+            _ => (),
         }
 
         let color = &self.color;
@@ -134,7 +137,7 @@ impl fmt::Display for Clock {
 
         writeln!(
             f,
-            "\n{bold_escape_str}{}{}{text}\x1B[0m",
+            "\n{bold_escape_str}{}{}{text}",
             self.text_left_pad,
             self.color.foreground(),
         )

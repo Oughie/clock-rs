@@ -11,10 +11,11 @@ mod state;
 use std::{process, time::Duration};
 
 use clap::Parser;
+use clock::time_zone::TimeZone;
 
 use crate::{
     cli::{Args, Mode},
-    clock::{clock_mode::ClockMode, counter::Counter, time::Time},
+    clock::{counter::Counter, mode::ClockMode},
     config::Config,
     error::Error,
     state::State,
@@ -22,7 +23,7 @@ use crate::{
 
 fn main() {
     if let Err(err) = run() {
-        eprintln!("\x1b[1;31mError:\x1B[0;1m {err}");
+        eprintln!("\x1b[1;4;31mError:\x1B[0;1m {err}");
         process::exit(1);
     }
 }
@@ -36,7 +37,10 @@ fn run() -> Result<(), Error> {
 
     let clock_mode = if let Some(mode) = mode {
         match mode {
-            Mode::Clock => ClockMode::CurrentTime(Time::new(config.date.utc)),
+            Mode::Clock => ClockMode::Time {
+                time_zone: TimeZone::from_bool(config.date.utc),
+                date_format: config.date.fmt.clone(),
+            },
             Mode::Timer(args) => {
                 if args.secs >= Counter::MAX_TIMER_DURATION {
                     return Err(Error::TimerDurationTooLong(args.secs));
@@ -46,10 +50,10 @@ fn run() -> Result<(), Error> {
             Mode::Stopwatch => ClockMode::Counter(Counter::new(None)),
         }
     } else {
-        ClockMode::CurrentTime(match config.date.utc {
-            true => Time::Utc,
-            false => Time::Local,
-        })
+        ClockMode::Time {
+            time_zone: TimeZone::from_bool(config.date.utc),
+            date_format: config.date.fmt.clone(),
+        }
     };
 
     State::new(config, clock_mode)?.run()?;

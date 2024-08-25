@@ -20,5 +20,5 @@ pub enum Error {
     #[error("Failed to parse configuration file \"{0}\":{}\n{1}", Color::RESET)]
     InvalidToml(String, String),
     #[error("IO Error:{}\n{0}", Color::RESET)]
-    IoError(#[from] io::Error),
+    Io(#[from] io::Error),
 }

@@ -11,7 +11,7 @@ use crossterm::{
 };
 
 use crate::{
-    clock::{clock_mode::ClockMode, Clock},
+    clock::{mode::ClockMode, Clock},
     config::Config,
 };
 
