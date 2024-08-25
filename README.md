@@ -6,7 +6,7 @@
 
 A modern, digital clock that _effortlessly_ runs in your terminal.
 
-![presentation](public/preview.png)
+![presentation](public/presentation.png)
 
 ## Table of Contents
 
