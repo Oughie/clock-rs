@@ -31,7 +31,6 @@ fn main() {
 fn run() -> Result<(), Error> {
     let args = Args::parse();
     let mut config = Config::parse()?;
-
     let mode = args.mode.clone();
     args.overwrite(&mut config);
 

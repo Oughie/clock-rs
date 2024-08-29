@@ -1,6 +1,6 @@
 [package]
 name = "clock-rs"
-version = "0.1.21"
+version = "0.1.206"
 authors = ["Oughie <oughery@gmail.com>"]
 description = "A modern, terminal-based digital clock"
 keywords = ["clock", "terminal", "time", "cli", "date"]

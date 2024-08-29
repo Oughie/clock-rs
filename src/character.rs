@@ -24,15 +24,12 @@ impl Character {
         Full, Sides, Full, Right, Full, // 9
     ];
 
-    fn segment(&self, row: usize) -> &Segment {
+    pub fn fmt(&self, color: &Color, row: usize) -> String {
         match self {
             Self::Num(n) => &Self::NUMBERS[*n as usize * 5 + row],
             Self::Colon => &Self::COLON[row],
             Self::Empty => &Empty,
         }
-    }
-
-    pub fn fmt(&self, color: &Color, row: usize) -> String {
-        self.segment(row).fmt(color)
+        .fmt(color)
     }
 }
