@@ -4,34 +4,34 @@
 [![License](https://img.shields.io/github/license/Oughie/clock-rs)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/Oughie/clock-rs)](https://github.com/Oughie/clock-rs/stargazers)
 
-A modern, digital clock that _effortlessly_ runs in your terminal.
+A modern, digital clock that _effortlessly_ runs in your terminal. ⏰
 
 ![Presentation](public/presentation.png)
 
-## Table of Contents
+## :information_source: Table of Contents
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
+- [Introduction](#scroll-introduction)
+- [Installation](#hammer_and_wrench-installation)
+- [Usage](#clipboard-usage)
+- [Configuration](#gear-configuration)
   - [Fields](#fields)
   - [Example](#example)
-- [Contributing](#contributing)
-- [License](#license)
+- [Contributing](#handshake-contributing)
+- [License](#page_facing_up-license)
 
-## Introduction
+## :scroll: Introduction
 
 `clock-rs` is a terminal-based clock written in Rust, designed to be a new alternative to [tty-clock](https://github.com/xorg62/tty-clock). It offers several improvements, which include:
 - The use of a single configuration file to manage its settings, with the ability to overwrite them through the command line,
 - Many additional features such as a timer and a stopwatch,
 - And greater flexibility as well as better user experience!
 
-## Installation
+## :hammer_and_wrench: Installation
 
 To install `clock-rs` globally using Cargo, simply run `$ cargo install clock-rs`.
 You can then run the executable via the `clock-rs` command.
 
-## Usage
+## :clipboard: Usage
 
 ```
 Usage: clock-rs [OPTIONS] [COMMAND]
@@ -63,7 +63,7 @@ To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
 > If no command is specified, the `clock` command is used by default.  
 > Therefore, running `$ clock-rs clock` or simply `$ clock-rs` will both display the current time.
 
-## Configuration
+## :gear: Configuration
 
 `clock-rs` uses the [TOML](https://toml.io/en/) file format for its settings.
 By default, the configuration file is named `conf.toml` and is stored in the OS configuration directory, within the `clock-rs` subdirectory.
@@ -120,12 +120,12 @@ hide_seconds = true
 
 The default configuration can be found [here](public/default.toml).
 
-## Contributing
+## :handshake: Contributing
 
 Feel free to report bugs, suggest features or contribute code.  
 Any help is appreciated!
 
-## License
+## :page_facing_up: License
 
 Copyright © 2024 Oughie
 
