@@ -10,6 +10,7 @@ use mode::ClockMode;
 
 pub struct Clock {
     pub mode: ClockMode,
+    pub y: u16,
     x_pos: Position,
     y_pos: Position,
     color: Color,
@@ -18,7 +19,6 @@ pub struct Clock {
     blink: bool,
     bold: bool,
     left_pad: String,
-    top_pad: String,
     text_left_pad: String,
 }
 
@@ -33,6 +33,7 @@ impl Clock {
     pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
         Ok(Self {
             mode,
+            y: 0,
             x_pos: config.position.x,
             y_pos: config.position.y,
             color: config.general.color,
@@ -41,7 +42,6 @@ impl Clock {
             blink: config.general.blink,
             bold: config.general.bold,
             left_pad: String::new(),
-            top_pad: String::new(),
             text_left_pad: String::new(),
         })
     }
@@ -51,29 +51,25 @@ impl Clock {
 
         let text_len = text.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
 
-        let half_width = if self.hide_seconds {
-            Self::WIDTH_NO_SECONDS / 2
-        } else {
-            Self::WIDTH / 2
-        };
+        let half_width = self.width() / 2;
 
         let x = self.x_pos.calculate(width.into(), half_width);
-        let y = self.y_pos.calculate(height.into(), Self::HEIGHT / 2);
+        self.y = self.y_pos.calculate(height.into(), Self::HEIGHT / 2) as u16;
 
         self.left_pad = " ".repeat(x);
-        self.top_pad = "\n".repeat(y);
         self.text_left_pad = " ".repeat(x + half_width.saturating_sub(text_len / 2));
     }
 
     pub fn is_too_large(&self, width: usize, height: usize) -> bool {
+        self.width() + 1 >= width || Self::HEIGHT + 1 >= height
+    }
+
+    fn width(&self) -> usize {
         if self.hide_seconds {
-            if Self::WIDTH_NO_SECONDS + 2 > width {
-                return true;
-            }
-        } else if Self::WIDTH + 2 > width {
-            return true;
+            Self::WIDTH_NO_SECONDS
+        } else {
+            Self::WIDTH
         }
-        Self::HEIGHT + 2 > height
     }
 }
 
@@ -102,8 +98,6 @@ impl fmt::Display for Clock {
         }
 
         let color = &self.color;
-
-        writeln!(f, "{}", self.top_pad)?;
 
         for row in 0..5 {
             let colon_character = if self.blink {

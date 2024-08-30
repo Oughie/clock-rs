@@ -96,14 +96,14 @@ impl State {
         let mut stdout = io::stdout();
         let (width, height) = terminal::size()?;
 
-        execute!(stdout, MoveTo(0, 0))?;
-
         if self.clock.is_too_large(width.into(), height.into()) {
             return Ok(());
         }
 
         let lock = stdout.lock();
         let mut w = io::BufWriter::new(lock);
+
+        execute!(stdout, MoveTo(0, self.clock.y))?;
 
         write!(w, "{}", self.clock)?;
 
