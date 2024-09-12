@@ -4,9 +4,9 @@ pub mod time_zone;
 
 use std::{fmt, io};
 
-use crate::{character::Character, color::Color, config::Config, position::Position};
-
-use mode::ClockMode;
+use crate::{
+    character::Character, clock::mode::ClockMode, color::Color, config::Config, position::Position,
+};
 
 pub struct Clock {
     pub mode: ClockMode,

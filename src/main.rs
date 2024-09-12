@@ -11,7 +11,7 @@ mod state;
 use std::{process, time::Duration};
 
 use clap::Parser;
-use clock::time_zone::TimeZone;
+use clock::{counter::CounterType, time_zone::TimeZone};
 
 use crate::{
     cli::{Args, Mode},
@@ -23,7 +23,7 @@ use crate::{
 
 fn main() {
     if let Err(err) = run() {
-        eprintln!("\x1b[1;4;31mError:\x1B[0;1m {err}");
+        println!("\x1b[1;4;31mError:\x1B[0;1m {err}");
         process::exit(1);
     }
 }
@@ -44,9 +44,11 @@ fn run() -> Result<(), Error> {
                 if args.secs >= Counter::MAX_TIMER_DURATION {
                     return Err(Error::TimerDurationTooLong(args.secs));
                 }
-                ClockMode::Counter(Counter::new(Some(Duration::from_secs(args.secs))))
+                ClockMode::Counter(Counter::new(CounterType::Timer {
+                    duration: Duration::from_secs(args.secs),
+                }))
             }
-            Mode::Stopwatch => ClockMode::Counter(Counter::new(None)),
+            Mode::Stopwatch => ClockMode::Counter(Counter::new(CounterType::Stopwatch)),
         }
     } else {
         ClockMode::Time {

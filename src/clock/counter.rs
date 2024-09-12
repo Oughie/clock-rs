@@ -1,21 +1,30 @@
 use std::time::{Duration, Instant};
 
 pub struct Counter {
+    pub text: &'static str,
     start: Instant,
     last_pause: Option<Instant>,
-    duration: Option<Duration>,
+    ty: CounterType,
     paused: bool,
+}
+
+pub enum CounterType {
+    Stopwatch,
+    Timer { duration: Duration },
 }
 
 impl Counter {
     pub const MAX_TIMER_HOURS: u64 = 24;
     pub const MAX_TIMER_DURATION: u64 = Self::MAX_TIMER_HOURS * 3600;
+    const TEXT: &'static str = "p: Toggle Pause, r: Restart";
+    const TEXT_PAUSED: &'static str = "p: Toggle Pause, r: Restart [Paused]";
 
-    pub fn new(duration: Option<Duration>) -> Self {
+    pub fn new(ty: CounterType) -> Self {
         Self {
             start: Instant::now(),
             last_pause: None,
-            duration,
+            ty,
+            text: Self::TEXT,
             paused: false,
         }
     }
@@ -31,6 +40,11 @@ impl Counter {
         }
 
         self.paused = !self.paused;
+        self.text = if self.paused {
+            Self::TEXT_PAUSED
+        } else {
+            Self::TEXT
+        };
     }
 
     pub fn restart(&mut self) {
@@ -50,7 +64,7 @@ impl Counter {
             self.start.elapsed()
         };
 
-        if let Some(duration) = self.duration {
+        if let CounterType::Timer { duration, .. } = self.ty {
             elapsed = duration.saturating_sub(elapsed.saturating_sub(Duration::from_secs(1)))
         }
 
@@ -60,13 +74,5 @@ impl Counter {
         let seconds = secs % 60;
 
         (hours, minutes, seconds)
-    }
-
-    pub const fn text(&self) -> &str {
-        if self.paused {
-            "p: Toggle Pause, r: Restart [Paused]"
-        } else {
-            "p: Toggle Pause, r: Restart"
-        }
     }
 }

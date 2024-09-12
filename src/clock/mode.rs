@@ -22,7 +22,7 @@ impl ClockMode {
                 time_zone,
                 date_format,
             } => time_zone.text(date_format),
-            Self::Counter(counter) => counter.text().into(),
+            Self::Counter(counter) => counter.text.into(),
         }
     }
 }
