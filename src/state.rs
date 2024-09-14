@@ -3,6 +3,7 @@ use std::{
     time::Duration,
 };
 
+use clap::Parser;
 use crossterm::{
     cursor::{Hide, MoveTo, Show},
     event::{self, Event, KeyCode, KeyEvent, KeyEventKind, KeyModifiers},
@@ -11,8 +12,10 @@ use crossterm::{
 };
 
 use crate::{
-    clock::{mode::ClockMode, Clock},
+    cli::{Args, Mode},
+    clock::{counter::Counter, counter::CounterType, mode::ClockMode, time_zone::TimeZone, Clock},
     config::Config,
+    error::Error,
 };
 
 pub struct State {
@@ -21,11 +24,32 @@ pub struct State {
 }
 
 impl State {
-    pub fn new(config: Config, mode: ClockMode) -> io::Result<Self> {
+    pub fn new() -> Result<Self, Error> {
+        let args = Args::parse();
+        let mut config = Config::parse()?;
+        let mode = args.mode.clone();
+        args.overwrite(&mut config);
+
+        let clock_mode = match mode {
+            None | Some(Mode::Clock) => ClockMode::Time {
+                time_zone: TimeZone::from_bool(config.date.utc),
+                date_format: config.date.fmt.clone(),
+            },
+            Some(Mode::Timer(args)) => {
+                if args.secs >= Counter::MAX_TIMER_SECONDS {
+                    return Err(Error::TimerDurationTooLong(args.secs));
+                }
+                ClockMode::Counter(Counter::new(CounterType::Timer {
+                    duration: Duration::from_secs(args.secs),
+                }))
+            }
+            Some(Mode::Stopwatch) => ClockMode::Counter(Counter::new(CounterType::Stopwatch)),
+        };
+
         let interval = config.general.interval;
 
         let (width, height) = terminal::size()?;
-        let mut clock = Clock::new(config, mode)?;
+        let mut clock = Clock::new(config, clock_mode)?;
         clock.update_position(width, height);
 
         Ok(Self {

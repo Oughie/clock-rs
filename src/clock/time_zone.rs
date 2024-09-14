@@ -16,12 +16,12 @@ impl TimeZone {
     pub fn get_time(&self) -> (u32, u32, u32) {
         match self {
             Self::Local => {
-                let time = Local::now();
-                (time.hour(), time.minute(), time.second())
+                let local = Local::now();
+                (local.hour(), local.minute(), local.second())
             }
             Self::Utc => {
-                let time = Utc::now();
-                (time.hour(), time.minute(), time.second())
+                let utc = Utc::now();
+                (utc.hour(), utc.minute(), utc.second())
             }
         }
     }

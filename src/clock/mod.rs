@@ -49,7 +49,7 @@ impl Clock {
     pub fn update_position(&mut self, width: u16, height: u16) {
         let text = self.mode.text();
 
-        let text_len = text.to_string().len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
+        let text_len = text.len() + if self.use_12h { Self::SUFFIX_LEN } else { 0 };
 
         let half_width = self.width() / 2;
 
@@ -127,7 +127,7 @@ impl fmt::Display for Clock {
             writeln!(f, "\r")?;
         }
 
-        let bold_escape_str = if self.bold { "\x1B[1m" } else { "" };
+        let bold_escape_str = if self.bold { Color::BOLD } else { "" };
 
         writeln!(
             f,

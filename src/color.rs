@@ -1,6 +1,13 @@
 use clap::ValueEnum;
 use serde::Deserialize;
 
+#[macro_export]
+macro_rules! esc {
+    ($n:tt) => {
+        concat!("\x1B[", $n, "m")
+    };
+}
+
 #[derive(Clone, Default, Deserialize, ValueEnum)]
 #[serde(rename_all = "lowercase")]
 pub enum Color {
@@ -24,46 +31,47 @@ pub enum Color {
 }
 
 impl Color {
-    pub const RESET: &'static str = "\x1B[0m";
+    pub const RESET: &'static str = esc!(0);
+    pub const BOLD: &'static str = esc!(1);
 
     pub const fn foreground(&self) -> &'static str {
         match self {
-            Self::Black => "\x1B[30m",
-            Self::Red => "\x1B[31m",
-            Self::Green => "\x1B[32m",
-            Self::Yellow => "\x1B[33m",
-            Self::Blue => "\x1B[34m",
-            Self::Magenta => "\x1B[35m",
-            Self::Cyan => "\x1B[36m",
-            Self::White => "\x1B[37m",
-            Self::BrightBlack => "\x1B[90m",
-            Self::BrightRed => "\x1B[91m",
-            Self::BrightGreen => "\x1B[92m",
-            Self::BrightYellow => "\x1B[93m",
-            Self::BrightBlue => "\x1B[94m",
-            Self::BrightMagenta => "\x1B[95m",
-            Self::BrightCyan => "\x1B[96m",
-            Self::BrightWhite => "\x1B[97m",
+            Self::Black => esc!(30),
+            Self::Red => esc!(31),
+            Self::Green => esc!(32),
+            Self::Yellow => esc!(33),
+            Self::Blue => esc!(34),
+            Self::Magenta => esc!(35),
+            Self::Cyan => esc!(36),
+            Self::White => esc!(37),
+            Self::BrightBlack => esc!(90),
+            Self::BrightRed => esc!(91),
+            Self::BrightGreen => esc!(92),
+            Self::BrightYellow => esc!(93),
+            Self::BrightBlue => esc!(94),
+            Self::BrightMagenta => esc!(95),
+            Self::BrightCyan => esc!(96),
+            Self::BrightWhite => esc!(97),
         }
     }
     pub const fn background(&self) -> &'static str {
         match self {
-            Self::Black => "\x1B[40m",
-            Self::Red => "\x1B[41m",
-            Self::Green => "\x1B[42m",
-            Self::Yellow => "\x1B[43m",
-            Self::Blue => "\x1B[44m",
-            Self::Magenta => "\x1B[45m",
-            Self::Cyan => "\x1B[46m",
-            Self::White => "\x1B[47m",
-            Self::BrightBlack => "\x1B[100m",
-            Self::BrightRed => "\x1B[101m",
-            Self::BrightGreen => "\x1B[102m",
-            Self::BrightYellow => "\x1B[103m",
-            Self::BrightBlue => "\x1B[104m",
-            Self::BrightMagenta => "\x1B[105m",
-            Self::BrightCyan => "\x1B[106m",
-            Self::BrightWhite => "\x1B[107m",
+            Self::Black => esc!(40),
+            Self::Red => esc!(41),
+            Self::Green => esc!(42),
+            Self::Yellow => esc!(43),
+            Self::Blue => esc!(44),
+            Self::Magenta => esc!(45),
+            Self::Cyan => esc!(46),
+            Self::White => esc!(47),
+            Self::BrightBlack => esc!(100),
+            Self::BrightRed => esc!(101),
+            Self::BrightGreen => esc!(102),
+            Self::BrightYellow => esc!(103),
+            Self::BrightBlue => esc!(104),
+            Self::BrightMagenta => esc!(105),
+            Self::BrightCyan => esc!(106),
+            Self::BrightWhite => esc!(107),
         }
     }
 }
