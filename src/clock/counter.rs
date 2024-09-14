@@ -1,16 +1,21 @@
-use std::time::{Duration, Instant};
+use std::{
+    process,
+    time::{Duration, Instant},
+};
+
+use crate::state::State;
 
 pub struct Counter {
     pub text: &'static str,
     start: Instant,
     last_pause: Option<Instant>,
     ty: CounterType,
-    pub paused: bool,
+    paused: bool,
 }
 
 pub enum CounterType {
     Stopwatch,
-    Timer { duration: Duration },
+    Timer { duration: Duration, kill: bool },
 }
 
 impl Counter {
@@ -64,10 +69,18 @@ impl Counter {
         };
 
         if let CounterType::Timer { duration, .. } = self.ty {
-            elapsed = duration.saturating_sub(elapsed.saturating_sub(Duration::from_secs(1)))
+            elapsed = duration.saturating_sub(elapsed.saturating_sub(Duration::from_secs(1)));
         }
 
         let secs = elapsed.as_secs() as u32;
+
+        if let CounterType::Timer { kill, .. } = self.ty {
+            if kill && secs == 0 {
+                State::exit();
+                process::exit(1);
+            }
+        }
+
         let hours = secs / 3600;
         let minutes = (secs % 3600) / 60;
         let seconds = secs % 60;

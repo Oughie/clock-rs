@@ -41,6 +41,7 @@ impl State {
                 }
                 ClockMode::Counter(Counter::new(CounterType::Timer {
                     duration: Duration::from_secs(args.secs),
+                    kill: args.kill,
                 }))
             }
             Some(Mode::Stopwatch) => ClockMode::Counter(Counter::new(CounterType::Stopwatch)),
@@ -133,15 +134,19 @@ impl State {
 
         w.flush()
     }
-}
 
-impl Drop for State {
-    fn drop(&mut self) {
+    pub fn exit() {
         let mut stdout = io::stdout();
 
         execute!(stdout, LeaveAlternateScreen, Show)
             .expect("Error: Could not leave alternate screen.");
         terminal::disable_raw_mode()
             .expect("Error: Could not disable raw mode. You might have to restart your terminal.");
+    }
+}
+
+impl Drop for State {
+    fn drop(&mut self) {
+        Self::exit();
     }
 }

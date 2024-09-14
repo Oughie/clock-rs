@@ -1,6 +1,6 @@
 [package]
 name = "clock-rs"
-version = "0.1.208"
+version = "0.1.209"
 authors = ["Oughie <oughery@gmail.com>"]
 description = "A modern, terminal-based digital clock"
 keywords = ["clock", "terminal", "time", "cli", "date"]
@@ -14,10 +14,10 @@ edition = "2021"
 
 [dependencies]
 chrono = "0.4.38"
-clap = { version = "4.5.16", features = ["derive"] }
+clap = { version = "4.5.17", features = ["derive"] }
 crossterm = "0.28.1"
 dirs = "5.0.1"
-serde = { version = "1.0.209", features = ["derive"] }
+serde = { version = "1.0.210", features = ["derive"] }
 thiserror = "1.0.63"
 toml = "0.8.19"
 

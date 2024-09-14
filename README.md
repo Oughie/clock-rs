@@ -33,6 +33,8 @@ You can then run the executable via the `clock-rs` command.
 
 ## Usage
 
+#### `$ clock-rs --help`
+
 ```
 Usage: clock-rs [OPTIONS] [COMMAND]
 
@@ -55,6 +57,19 @@ Options:
   -b, --bold                 Use bold text
   -h, --help                 Print help
   -V, --version              Print version
+```
+
+#### `$ clock-rs timer --help`
+
+```
+Usage: clock-rs timer [OPTIONS] <SECS>
+
+Arguments:
+  <SECS>  Specify the timer duration in seconds
+
+Options:
+  -k, --kill  Terminate the application when the timer finishes
+  -h, --help  Print hel
 ```
 
 To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
@@ -86,12 +101,12 @@ Here's a list of the available fields inside the `conf.toml` file.
 | Field                     | Description                                | Possible values                                                                                                                   | Default      |
 | ------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------ |
 | `general.color`           | Specify the color of the clock             | `"black"`, `"red"`, `"green"`, `"yellow"`, `"blue"`, `"magenta"`, `"cyan"`, or `"white"`. Optionally, prefix them with `bright-`. | `"white"`    |
-| `general.interval`        | Set the polling interval in milliseconds   | An unsigned integer, e.g. `250`.                                                                                                 | `200`        |
+| `general.interval`        | Set the polling interval in milliseconds   | An unsigned integer, e.g. `250`.                                                                                                  | `200`        |
 | `general.blink`           | Set the colon to blink                     | `true` or `false`.                                                                                                                | `false`      |
 | `general.bold`            | Use bold text                              | `true` or `false`.                                                                                                                | `false`      |
 | `position.horizontal`     | Set the position along the horizontal axis | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
 | `position.vertical`       | Set the position along the vertical axis   | `"start"`, `"center"`, or `"end"`.                                                                                                | `"center"`   |
-| `date.fmt`                | Specify the date format                    | A string, e.g. `%A, %B %d, %Y`.                                                                                                 | `"%d-%m-%Y"` |
+| `date.fmt`                | Specify the date format                    | A string, e.g. `%A, %B %d, %Y`.                                                                                                   | `"%d-%m-%Y"` |
 | `date.use_12h`            | Use the 12h format                         | `true` or `false`.                                                                                                                | `false`      |
 | `date.utc`                | Use UTC time                               | `true` or `false`.                                                                                                                | `false`      |
 | `date.hide_seconds`       | Do not show seconds                        | `true` or `false`.                                                                                                                | `false`      |

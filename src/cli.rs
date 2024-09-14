@@ -15,7 +15,7 @@ fn styles() -> Styles {
 }
 
 #[derive(Parser)]
-#[clap(version = "v0.1.208, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
+#[clap(version = "v0.1.209, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
 pub struct Args {
     #[clap(subcommand)]
     pub mode: Option<Mode>,
@@ -65,6 +65,9 @@ pub enum Mode {
 pub struct TimerArgs {
     #[doc = "Specify the timer duration in seconds"]
     pub secs: u64,
+    #[doc = "Terminate the application when the timer finishes"]
+    #[clap(long, short)]
+    pub kill: bool,
 }
 
 impl Args {
