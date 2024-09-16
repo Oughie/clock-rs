@@ -83,11 +83,11 @@ To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
 `clock-rs` uses the [TOML](https://toml.io/en/) file format for its settings.
 By default, the configuration file is named `conf.toml` and is stored in the OS configuration directory, within the `clock-rs` subdirectory.
 
-| Platform | Configuration file path                                | Support                                                                  |
-| -------- | ------------------------------------------------------ | ------------------------------------------------------------------------ |
-| Linux    | `~/.config/clock-rs/conf.toml`                         | ✅ Confirmed                                                             |
-| MacOS    | `~/Library/Application Support/clock-rs/conf.toml`     | ❎ Unconfirmed                                                           |
-| Windows  | `C:\Users\%USERNAME%\AppData\Local\clock-rs\conf.toml` | 🚧 Partially working ([#2](https://github.com/Oughie/clock-rs/issues/2)) |
+| Platform | Configuration file path                                |
+| -------- | ------------------------------------------------------ |
+| Linux    | `~/.config/clock-rs/conf.toml`                         |
+| MacOS    | `~/Library/Application Support/clock-rs/conf.toml`     |
+| Windows  | `C:\Users\%USERNAME%\AppData\Local\clock-rs\conf.toml` |
 
 You can change this path by setting the `CONF_PATH` environment variable.  
 If you wish to run the application without automatically using the existing `conf.toml` file, you can set `CONF_PATH` to `None`.  
