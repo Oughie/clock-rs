@@ -33,8 +33,6 @@ You can then run the executable via the `clock-rs` command.
 
 ## Usage
 
-#### `$ clock-rs --help`
-
 ```
 Usage: clock-rs [OPTIONS] [COMMAND]
 
@@ -59,8 +57,6 @@ Options:
   -V, --version              Print version
 ```
 
-#### `$ clock-rs timer --help`
-
 ```
 Usage: clock-rs timer [OPTIONS] <SECS>
 
@@ -69,7 +65,7 @@ Arguments:
 
 Options:
   -k, --kill  Terminate the application when the timer finishes
-  -h, --help  Print hel
+  -h, --help  Print help
 ```
 
 To exit the application, press either `Escape`, `q`, or `Ctrl-C`.
