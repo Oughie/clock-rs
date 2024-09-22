@@ -15,7 +15,7 @@ fn styles() -> Styles {
 }
 
 #[derive(Parser)]
-#[clap(version = "v0.1.209, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
+#[clap(version = "v0.1.210, (C) 2024 Oughie", hide_possible_values = true, styles = styles())]
 pub struct Args {
     #[clap(subcommand)]
     pub mode: Option<Mode>,
