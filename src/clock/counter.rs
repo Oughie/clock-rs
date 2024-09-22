@@ -55,26 +55,27 @@ impl Counter {
     pub fn restart(&mut self) {
         self.start = Instant::now();
         self.last_pause = None;
+        if self.paused {
+            self.toggle_pause();
+        }
     }
 
     pub fn get_time(&self) -> (u32, u32, u32) {
         let mut elapsed = if self.paused {
-            if let Some(last_pause) = self.last_pause {
-                last_pause.duration_since(self.start)
-            } else {
-                Duration::from_secs(0)
+            match self.last_pause {
+                Some(last_pause) => last_pause.duration_since(self.start),
+                _ => Duration::from_secs(0),
             }
         } else {
             self.start.elapsed()
         };
 
-        if let CounterType::Timer { duration, .. } = self.ty {
+        let mut secs = elapsed.as_secs() as u32;
+
+        if let CounterType::Timer { duration, kill } = self.ty {
             elapsed = duration.saturating_sub(elapsed.saturating_sub(Duration::from_secs(1)));
-        }
+            secs = elapsed.as_secs() as u32;
 
-        let secs = elapsed.as_secs() as u32;
-
-        if let CounterType::Timer { kill, .. } = self.ty {
             if kill && secs == 0 {
                 State::exit();
                 process::exit(1);
