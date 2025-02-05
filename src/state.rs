@@ -12,7 +12,7 @@ use crossterm::{
 };
 
 use crate::{
-    cli::{Args, Mode},
+    cli::args::{Args, Mode},
     clock::{counter::Counter, counter::CounterType, mode::ClockMode, time_zone::TimeZone, Clock},
     config::Config,
     error::Error,
