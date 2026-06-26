@@ -14,6 +14,8 @@ pub struct Config {
     pub general: GeneralConfig,
     pub position: PositionConfig,
     pub date: DateConfig,
+    pub clock: ClockConfig,
+    pub counter: CounterConfig,
 }
 
 #[derive(Deserialize)]
@@ -65,6 +67,56 @@ impl Default for DateConfig {
     }
 }
 
+pub type ClockConfig = TimeFormatConfig;
+pub type CounterConfig = TimeFormatConfig;
+
+#[derive(Default, Deserialize)]
+#[serde(default)]
+pub struct TimeFormatConfig {
+    pub fmt: TimeFormat,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq)]
+#[serde(try_from = "String")]
+pub enum TimeFormat {
+    #[default]
+    HoursMinutesSeconds,
+    HoursMinutesSecondsMilliseconds,
+}
+
+impl TimeFormat {
+    pub const HOURS_MINUTES_SECONDS: &'static str = "hh:mm:ss";
+    pub const HOURS_MINUTES_SECONDS_MILLISECONDS: &'static str = "hh:mm:ss.SSS";
+
+    pub fn shows_milliseconds(self) -> bool {
+        matches!(self, Self::HoursMinutesSecondsMilliseconds)
+    }
+}
+
+impl TryFrom<String> for TimeFormat {
+    type Error = String;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Self::try_from(value.as_str())
+    }
+}
+
+impl TryFrom<&str> for TimeFormat {
+    type Error = String;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            Self::HOURS_MINUTES_SECONDS => Ok(Self::HoursMinutesSeconds),
+            Self::HOURS_MINUTES_SECONDS_MILLISECONDS => Ok(Self::HoursMinutesSecondsMilliseconds),
+            _ => Err(format!(
+                "expected `{}` or `{}`",
+                Self::HOURS_MINUTES_SECONDS,
+                Self::HOURS_MINUTES_SECONDS_MILLISECONDS
+            )),
+        }
+    }
+}
+
 impl Config {
     pub fn parse() -> Result<Self, Error> {
         let path = match env::var("CONF_PATH") {
@@ -104,5 +156,65 @@ impl Config {
             path: file_path,
             err: err.to_string(),
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Config, TimeFormat};
+
+    #[test]
+    fn time_formats_default_to_whole_seconds() {
+        let config: Config = toml::from_str("").unwrap();
+
+        assert_eq!(config.clock.fmt, TimeFormat::HoursMinutesSeconds);
+        assert_eq!(config.counter.fmt, TimeFormat::HoursMinutesSeconds);
+    }
+
+    #[test]
+    fn clock_format_supports_milliseconds() {
+        let config: Config = toml::from_str(
+            r#"
+            [clock]
+            fmt = "hh:mm:ss.SSS"
+            "#,
+        )
+        .unwrap();
+
+        assert_eq!(
+            config.clock.fmt,
+            TimeFormat::HoursMinutesSecondsMilliseconds
+        );
+    }
+
+    #[test]
+    fn counter_format_supports_milliseconds() {
+        let config: Config = toml::from_str(
+            r#"
+            [counter]
+            fmt = "hh:mm:ss.SSS"
+            "#,
+        )
+        .unwrap();
+
+        assert_eq!(
+            config.counter.fmt,
+            TimeFormat::HoursMinutesSecondsMilliseconds
+        );
+    }
+
+    #[test]
+    fn counter_format_rejects_unknown_format() {
+        let err = match toml::from_str::<Config>(
+            r#"
+            [counter]
+            fmt = "HH:MM:SS.SSS"
+            "#,
+        ) {
+            Ok(_) => panic!("invalid counter format was accepted"),
+            Err(err) => err,
+        };
+
+        assert!(err.to_string().contains("expected `hh:mm:ss`"));
     }
 }

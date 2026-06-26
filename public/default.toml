@@ -16,3 +16,9 @@ fmt = "%d-%m-%Y"
 use_12h = false
 utc = false
 hide_seconds = false
+
+[clock]
+fmt = "hh:mm:ss"
+
+[counter]
+fmt = "hh:mm:ss"

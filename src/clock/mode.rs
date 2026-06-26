@@ -1,5 +1,5 @@
 use crate::{
-    clock::{counter::Counter, time_zone::TimeZone},
+    clock::{counter::Counter, time_zone::TimeZone, TimeParts},
     error::Error,
 };
 
@@ -12,9 +12,9 @@ pub enum ClockMode {
 }
 
 impl ClockMode {
-    pub fn get_time(&self) -> (u32, u32, u32) {
+    pub fn get_time(&self, show_counter_milliseconds: bool) -> TimeParts {
         match self {
-            Self::Counter(counter) => counter.get_time(),
+            Self::Counter(counter) => counter.get_time(show_counter_milliseconds),
             Self::Time { time_zone, .. } => time_zone.get_time(),
         }
     }
