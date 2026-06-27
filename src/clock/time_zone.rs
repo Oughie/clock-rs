@@ -2,7 +2,7 @@ use std::fmt::Write;
 
 use chrono::{Local, Timelike, Utc};
 
-use crate::error::Error;
+use crate::{clock::TimeParts, error::Error};
 
 pub enum TimeZone {
     Local,
@@ -18,16 +18,26 @@ impl TimeZone {
         Self::Local
     }
 
-    pub fn get_time(&self) -> (u32, u32, u32) {
+    pub fn get_time(&self) -> TimeParts {
         if let Self::Utc = self {
             let utc = Utc::now();
 
-            return (utc.hour(), utc.minute(), utc.second());
+            return TimeParts {
+                hour: utc.hour(),
+                minute: utc.minute(),
+                second: utc.second(),
+                millisecond: utc.nanosecond() / 1_000_000,
+            };
         }
 
         let local = Local::now();
 
-        (local.hour(), local.minute(), local.second())
+        TimeParts {
+            hour: local.hour(),
+            minute: local.minute(),
+            second: local.second(),
+            millisecond: local.nanosecond() / 1_000_000,
+        }
     }
 
     pub fn text(&self, date_format: &str, max_len: u16) -> Result<String, Error> {

@@ -110,6 +110,7 @@ impl State {
                 self.reload_config()?;
             }
 
+            self.exit_if_finished();
             self.render()?;
 
             if !event::poll(self.clock.interval)? {
@@ -187,6 +188,8 @@ impl State {
 
         clock.use_12h = config.date.use_12h;
         clock.hide_seconds = config.date.hide_seconds;
+        clock.clock_format = config.clock.fmt;
+        clock.counter_format = config.counter.fmt;
 
         if let ClockMode::Time {
             time_zone,
@@ -199,6 +202,12 @@ impl State {
 
         let (width, height) = terminal::size()?;
         self.refresh_display(width, height)
+    }
+
+    fn exit_if_finished(&self) {
+        if let ClockMode::Counter(counter) = &self.clock.mode {
+            counter.exit_if_finished();
+        }
     }
 
     fn render(&self) -> Result<(), Error> {

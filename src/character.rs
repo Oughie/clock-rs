@@ -6,11 +6,13 @@ use crate::{
 pub enum Character {
     Num(u32),
     Colon,
+    Dot,
     Empty,
 }
 
 impl Character {
     const COLON: [Segment; 5] = [Empty, Center, Empty, Center, Empty];
+    const DOT: [Segment; 5] = [Empty, Empty, Empty, Empty, Center];
     const NUMBERS: [Segment; 50] = [
         Full, Sides, Sides, Sides, Full, // 0
         Right, Right, Right, Right, Right, // 1
@@ -28,6 +30,7 @@ impl Character {
         match self {
             Self::Num(n) => &Self::NUMBERS[*n as usize * 5 + row],
             Self::Colon => &Self::COLON[row],
+            Self::Dot => &Self::DOT[row],
             Self::Empty => &Empty,
         }
         .fmt(color)

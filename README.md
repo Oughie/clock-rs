@@ -243,7 +243,9 @@ Here is a list of the available fields inside the `conf.toml` file.
 | `date.fmt`                | Specify the date format                    | A [chrono format](https://docs.rs/chrono/latest/chrono/format/strftime/index.html) string, e.g. `"%A, %B %d, %Y"`.  | `"%d-%m-%Y"` |
 | `date.use_12h`            | Use the 12h format                         | `true` or `false`.                 | `false`      |
 | `date.utc`                | Use UTC time                               | `true` or `false`.                 | `false`      |
-| `date.hide_seconds`       | Do not show seconds                        | `true` or `false`.                 | `false`      |
+| `date.hide_seconds`       | Do not show seconds. This is ignored when the active time format includes milliseconds. | `true` or `false`. | `false` |
+| `clock.fmt`               | Specify the clock format                   | `"hh:mm:ss"` or `"hh:mm:ss.SSS"`.  | `"hh:mm:ss"` |
+| `counter.fmt`             | Specify the timer and stopwatch format     | `"hh:mm:ss"` or `"hh:mm:ss.SSS"`.  | `"hh:mm:ss"` |
 
 ### Example
 
@@ -265,6 +267,12 @@ fmt = "%A, %B %d, %Y"
 use_12h = true
 utc = true
 hide_seconds = true
+
+[clock]
+fmt = "hh:mm:ss.SSS"
+
+[counter]
+fmt = "hh:mm:ss.SSS"
 ```
 
 The default configuration can be found [here](public/default.toml).
